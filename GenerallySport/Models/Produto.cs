@@ -9,7 +9,6 @@ namespace GenerallySport.Models
     {
         public int Id { get; set; }
         public int IdFornecedor { get; set; }
-        public Fornecedor Fornecedor { get; set; }
         public string Nome { get; set; }
         public string Descricao { get; set; }
         public string Categoria { get; set; }
