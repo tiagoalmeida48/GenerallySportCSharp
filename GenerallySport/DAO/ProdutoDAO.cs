@@ -43,8 +43,12 @@ namespace GenerallySport.DAO
 
 
                             if (sdReader["ID"] != null) produto.Id = int.TryParse(sdReader["ID"].ToString(), out iConvert) ? iConvert : 0;
-                             
-                            if (sdReader["ID_FORNECEDOR"] != null) produto.IdFornecedor = int.TryParse(sdReader["ID_FORNECEDOR"].ToString(), out iConvert) ? iConvert : 0;
+
+                            if (sdReader["ID_FORNECEDOR"] != null)
+                            {
+                                produto.Fornecedor = new Fornecedor();
+                                produto.Fornecedor.Id = int.TryParse(sdReader["ID_FORNECEDOR"].ToString(), out iConvert) ? iConvert : 0;
+                            }
 
                             if (sdReader["NOME"] != null) 
                                 produto.Nome = sdReader["NOME"].ToString(); 

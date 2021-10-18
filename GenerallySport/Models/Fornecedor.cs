@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GenerallySport.Models
 {
-    public partial class Fornecedor
+    public class Fornecedor
     {
         public int Id { get; set; }
         public string Razaosocial { get; set; }
