@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,6 +15,7 @@ namespace GenerallySport.Models
         public string Sexo { get; set; }
         public string Celular { get; set; }
         public string Telefone { get; set; }
+
         public int IdEndereco { get; set; }
     }
 }
