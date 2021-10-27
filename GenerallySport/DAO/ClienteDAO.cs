@@ -1,9 +1,11 @@
 ﻿using GenerallySport.Models;
+using GenerallySport.Token;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace GenerallySport.DAO
@@ -53,6 +55,12 @@ namespace GenerallySport.DAO
                             if (sdReader["CELULAR"] != null) cliente.Celular = sdReader["CELULAR"].ToString();
 
                             if (sdReader["TELEFONE"] != null) cliente.Telefone = sdReader["TELEFONE"].ToString();
+
+                            if (sdReader["EMAIL"] != null) cliente.Email = sdReader["EMAIL"].ToString();
+
+                            if (sdReader["SENHA"] != null) cliente.Senha = sdReader["SENHA"].ToString();
+
+                            if (sdReader["CAMINHO_FOTO"] != null) cliente.CaminhoFoto = sdReader["CAMINHO_FOTO"].ToString();
 
                             //ENDEREÇO CLIENTE
                             if (sdReader["ID_ENDERECO"] != null)
@@ -108,12 +116,13 @@ namespace GenerallySport.DAO
         public int CadastrarCliente(Cliente cliente)
         {
             SqlConnection connection = new SqlConnection(this.connectionString);
+            EncriptografarSenhas encripSenha = new EncriptografarSenhas(SHA512.Create());
 
             int retorno = 0;
 
             string query = "INSERT INTO CLIENTE " +
-                "(NOME, CPF, DATA_NASCIMENTO, SEXO, CELULAR, TELEFONE, ID_ENDERECO) VALUES" +
-                "(@Nome, @Cpf, @DataNascimento, @Sexo, @Celular, @Telefone, @IdEndereco)";
+                "(NOME, CPF, DATA_NASCIMENTO, SEXO, CELULAR, TELEFONE, EMAIL, SENHA, CAMINHO_FOTO, ID_ENDERECO) VALUES" +
+                "(@Nome, @Cpf, @DataNascimento, @Sexo, @Celular, @Telefone, @Email, @Senha, @CaminhoFoto, @IdEndereco)";
             SqlCommand cmd = new SqlCommand(query.ToString(), connection);
             cmd.CommandType = CommandType.Text;
 
@@ -123,6 +132,9 @@ namespace GenerallySport.DAO
             cmd.Parameters.AddWithValue("@Sexo", cliente.Sexo);
             cmd.Parameters.AddWithValue("@Celular", cliente.Celular);
             cmd.Parameters.AddWithValue("@Telefone", cliente.Telefone);
+            cmd.Parameters.AddWithValue("@Email", cliente.Email);
+            cmd.Parameters.AddWithValue("@Senha", encripSenha.EncriptografarSenha(cliente.Senha));
+            cmd.Parameters.AddWithValue("@CaminhoFoto", cliente.CaminhoFoto);
             cmd.Parameters.AddWithValue("@IdEndereco", (int)cliente.IdEndereco);
 
             try
@@ -147,11 +159,12 @@ namespace GenerallySport.DAO
         public int AtualizarCliente(Cliente cliente)
         {
             SqlConnection connection = new SqlConnection(this.connectionString);
+            EncriptografarSenhas encripSenha = new EncriptografarSenhas(SHA512.Create());
 
             int retorno = 0;
 
             string query = "UPDATE CLIENTE SET " +
-                "NOME = @Nome, CPF = @Cpf, DATA_NASCIMENTO = @DataNascimento, SEXO = @Sexo, CELULAR = @Celular, TELEFONE = @Telefone, ID_ENDERECO = @IdEndereco WHERE ID = @Id";
+                "NOME = @Nome, CPF = @Cpf, DATA_NASCIMENTO = @DataNascimento, SEXO = @Sexo, CELULAR = @Celular, TELEFONE = @Telefone, EMAIL = @Email, SENHA = @Senha, CAMINHO_FOTO = @CaminhoFoto, ID_ENDERECO = @IdEndereco WHERE ID = @Id";
             SqlCommand cmd = new SqlCommand(query.ToString(), connection);
             cmd.CommandType = CommandType.Text;
 
@@ -162,6 +175,9 @@ namespace GenerallySport.DAO
             cmd.Parameters.AddWithValue("@Sexo", cliente.Sexo);
             cmd.Parameters.AddWithValue("@Celular", cliente.Celular);
             cmd.Parameters.AddWithValue("@Telefone", cliente.Telefone);
+            cmd.Parameters.AddWithValue("@Email", cliente.Email);
+            cmd.Parameters.AddWithValue("@Senha", encripSenha.EncriptografarSenha(cliente.Senha));
+            cmd.Parameters.AddWithValue("@CaminhoFoto", cliente.CaminhoFoto);
             cmd.Parameters.AddWithValue("@IdEndereco", (int)cliente.IdEndereco);
 
             try
