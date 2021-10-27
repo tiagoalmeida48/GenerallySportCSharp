@@ -34,13 +34,26 @@ namespace GenerallySport.Controllers
         {
             int retorno = 0;
             ClienteDAO clienteDAO = new ClienteDAO();
+           
             if (cliente.Id < 1)
+            {
+                EnderecoDAO enderecoDAO = new EnderecoDAO();
+                var idEndereco = enderecoDAO.CadastrarEndereco(cliente.Endereco);
+                if(idEndereco <= 0)
+                {
+                    return new string[] { "Cliente não inserido!" };
+                }
+                cliente.IdEndereco = idEndereco;
                 retorno = clienteDAO.CadastrarCliente(cliente);
+            }
             else
                 return new string[] { "Cliente já cadastrado!" };
 
             if (retorno == 1)
+            {
+                
                 return new string[] { "Cliente inserido com sucesso!" };
+            }
             
             return new string[] { "Cliente não inserido!" };
         }

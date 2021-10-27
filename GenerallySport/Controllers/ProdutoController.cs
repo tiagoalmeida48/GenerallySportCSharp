@@ -15,30 +15,17 @@ namespace GenerallySports.Controllers
         [HttpGet]
         public List<Produto> Get()
         {
-            ProdutoDAO objApiProduto = new ProdutoDAO();
-
-            try
-            {
-                return objApiProduto.RetornarListaProduto();
-            }
-            catch (Exception ex)
-            {
-                var retorno = new List<Produto>();
-                var produto = new Produto();
-                produto.Nome = ex.Message;
-                retorno.Add(produto);
-                return retorno;
-            }
-
+            ProdutoDAO produtoDAO = new ProdutoDAO();
+            return produtoDAO.RetornarListaProduto();
         }
 
         [HttpGet]
         [Route("{Id}")]
         public List<Produto> Get([FromRoute] int Id)
         {
-            ProdutoDAO objApiProduto = new ProdutoDAO();
+            ProdutoDAO produtoDAO = new ProdutoDAO();
 
-            return objApiProduto.RetornarListaProdutoPorId(Id);
+            return produtoDAO.RetornarListaProdutoPorId(Id);
 
         }
 
@@ -46,9 +33,9 @@ namespace GenerallySports.Controllers
         [Route("nome/{nome}")]
         public List<Produto> Get([FromRoute] string nome)
         {
-            ProdutoDAO objApiProduto = new ProdutoDAO();
+            ProdutoDAO produtoDAO = new ProdutoDAO();
 
-            return objApiProduto.RetornarListaProdutoPorNome(nome);
+            return produtoDAO.RetornarListaProdutoPorNome(nome);
 
         }
     }

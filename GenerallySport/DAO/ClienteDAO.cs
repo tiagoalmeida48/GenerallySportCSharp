@@ -16,7 +16,7 @@ namespace GenerallySport.DAO
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 StringBuilder sbQuery = new StringBuilder();
-                sbQuery.AppendLine("SELECT * FROM CLIENTE");
+                sbQuery.AppendLine("SELECT * FROM CLIENTE CLI JOIN ENDERECO EN ON CLI.ID_ENDERECO = EN.ID");
 
                 SqlCommand objCmd = new SqlCommand(sbQuery.ToString(), conn);
                 objCmd.CommandType = CommandType.Text;
@@ -32,6 +32,7 @@ namespace GenerallySport.DAO
                         while (sdReader.Read())
                         {
                             Cliente cliente = new Cliente();
+                            cliente.Endereco = new Endereco();
 
                             int iConvert = 0;
                             DateTime dtConvert = DateTime.MinValue;
@@ -39,9 +40,6 @@ namespace GenerallySport.DAO
 
                             if (sdReader["ID"] != null) 
                                 cliente.Id = int.TryParse(sdReader["ID"].ToString(), out iConvert) ? iConvert : 0;
-
-                            if (sdReader["ID_ENDERECO"] != null) 
-                                cliente.IdEndereco = int.TryParse(sdReader["ID_ENDERECO"].ToString(), out iConvert) ? iConvert : 0;
 
                             if (sdReader["NOME"] != null)
                                 cliente.Nome = sdReader["NOME"].ToString();
@@ -55,6 +53,27 @@ namespace GenerallySport.DAO
                             if (sdReader["CELULAR"] != null) cliente.Celular = sdReader["CELULAR"].ToString();
 
                             if (sdReader["TELEFONE"] != null) cliente.Telefone = sdReader["TELEFONE"].ToString();
+
+                            //ENDEREÇO CLIENTE
+                            if (sdReader["ID_ENDERECO"] != null)
+                                cliente.IdEndereco = int.TryParse(sdReader["ID_ENDERECO"].ToString(), out iConvert) ? iConvert : 0;
+
+                            if (sdReader["ID_ENDERECO"] != null) 
+                                cliente.Endereco.Id = int.TryParse(sdReader["ID_ENDERECO"].ToString(), out iConvert) ? iConvert : 0;
+
+                            if (sdReader["CEP"] != null) cliente.Endereco.Cep = sdReader["CEP"].ToString();
+
+                            if (sdReader["LOGRADOURO"] != null) cliente.Endereco.Logradouro = sdReader["LOGRADOURO"].ToString();
+
+                            if (sdReader["NUMERO"] != null) cliente.Endereco.Numero = sdReader["NUMERO"].ToString();
+
+                            if (sdReader["COMPLEMENTO"] != null) cliente.Endereco.Complemento = sdReader["COMPLEMENTO"].ToString();
+
+                            if (sdReader["BAIRRO"] != null) cliente.Endereco.Bairro = sdReader["BAIRRO"].ToString();
+
+                            if (sdReader["CIDADE"] != null) cliente.Endereco.Cidade = sdReader["CIDADE"].ToString();
+
+                            if (sdReader["UF"] != null) cliente.Endereco.Uf = sdReader["UF"].ToString();
 
                             lstCliente.Add(cliente);
                         }

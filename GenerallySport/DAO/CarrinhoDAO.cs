@@ -16,7 +16,7 @@ namespace GenerallySport.DAO
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 StringBuilder sbQuery = new StringBuilder();
-                sbQuery.AppendLine("SELECT * FROM CARRINHO");
+                sbQuery.AppendLine("SELECT CARRINHO.*, PRODUTO.* FROM CARRINHO JOIN PRODUTO ON PRODUTO.ID = CARRINHO.ID_PRODUTO");
 
                 SqlCommand objCmd = new SqlCommand(sbQuery.ToString(), conn);
                 objCmd.CommandType = CommandType.Text;
@@ -32,25 +32,51 @@ namespace GenerallySport.DAO
                         while (sdReader.Read())
                         {
                             Carrinho carrinho = new Carrinho();
+                            carrinho.Produto = new Produto();
 
                             int iConvert = 0;
                             decimal decConvert = 0;
-
+                            DateTime dtConvert = DateTime.MinValue;
 
                             if (sdReader["ID"] != null)
                                 carrinho.Id = int.TryParse(sdReader["ID"].ToString(), out iConvert) ? iConvert : 0;
 
                             if (sdReader["ID_CLIENTE"] != null)
                                 carrinho.IdCliente = int.TryParse(sdReader["ID_CLIENTE"].ToString(), out iConvert) ? iConvert : 0;
-
-                            if (sdReader["ID_PRODUTO"] != null)
-                                carrinho.IdProduto = int.TryParse(sdReader["ID_PRODUTO"].ToString(), out iConvert) ? iConvert : 0;
-
                             if (sdReader["QTDE"] != null)
                                 carrinho.Qtde = int.TryParse(sdReader["QTDE"].ToString(), out iConvert) ? iConvert : 1;
 
                             if (sdReader["PRECO"] != null)
                                 carrinho.Preco = decimal.TryParse(sdReader["PRECO"].ToString(), out decConvert) ? iConvert : 0;
+
+                            if (sdReader["ID_PRODUTO"] != null)
+                                carrinho.IdProduto = int.TryParse(sdReader["ID_PRODUTO"].ToString(), out iConvert) ? iConvert : 0;
+
+                            if (sdReader["ID_PRODUTO"] != null)
+                                carrinho.Produto.Id = int.TryParse(sdReader["ID_PRODUTO"].ToString(), out iConvert) ? iConvert : 0;
+
+                            if (sdReader["ID_FORNECEDOR"] != null)
+                                carrinho.Produto.IdFornecedor = int.TryParse(sdReader["ID_FORNECEDOR"].ToString(), out iConvert) ? iConvert : 0;
+
+                            if (sdReader["NOME"] != null) carrinho.Produto.Nome = sdReader["NOME"].ToString();
+
+                            if (sdReader["DESCRICAO"] != null) carrinho.Produto.Descricao = sdReader["DESCRICAO"].ToString();
+
+                            if (sdReader["CATEGORIA"] != null) carrinho.Produto.Categoria = sdReader["CATEGORIA"].ToString();
+
+                            if (sdReader["DATA_VALIDADE"] != null) carrinho.Produto.DataValidade = DateTime.TryParse(sdReader["DATA_VALIDADE"].ToString(), out dtConvert) ? dtConvert : DateTime.MinValue;
+
+                            if (sdReader["QTDE_ESTOQUE"] != null) carrinho.Produto.QtdeEstoque = int.TryParse(sdReader["QTDE_ESTOQUE"].ToString(), out iConvert) ? iConvert : 0;
+
+                            if (sdReader["QTDE_ESTOQUEATUAL"] != null) carrinho.Produto.QtdeEstoqueatual = int.TryParse(sdReader["QTDE_ESTOQUEATUAL"].ToString(), out iConvert) ? iConvert : 0;
+
+                            if (sdReader["CAMINHO_FOTO"] != null) carrinho.Produto.CaminhoFoto = sdReader["CAMINHO_FOTO"].ToString();
+
+                            if (sdReader["PRECO_UNITARIO"] != null) carrinho.Produto.PrecoUnitario = decimal.TryParse(sdReader["PRECO_UNITARIO"].ToString(), out decConvert) ? iConvert : 0;
+
+                            if (sdReader["PRECO_VENDA"] != null) carrinho.Produto.PrecoVenda = decimal.TryParse(sdReader["PRECO_VENDA"].ToString(), out decConvert) ? iConvert : 0;
+
+                            if (sdReader["INATIVO"] != null) carrinho.Produto.Inativo = sdReader["INATIVO"].ToString();
 
                             lstCarrinho.Add(carrinho);
                         }

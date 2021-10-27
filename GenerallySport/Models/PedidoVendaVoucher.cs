@@ -9,7 +9,7 @@ namespace GenerallySport.Models
     {
         public int Id { get; set; }
         public int IdVoucher { get; set; }
-        public int IdUsuario { get; set; }
+        public int IdCliente { get; set; }
         public DateTime DataPedidovenda { get; set; }
         public string SituacaoPedidovenda { get; set; }
         public decimal ValorFinal { get; set; }

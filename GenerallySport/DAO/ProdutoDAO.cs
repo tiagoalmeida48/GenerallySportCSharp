@@ -17,9 +17,7 @@ namespace GenerallySport.DAO
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 StringBuilder sbQuery = new StringBuilder();
-                sbQuery.AppendLine("SELECT P.*, F.*, E.* FROM PRODUTO P");
-                sbQuery.AppendLine("INNER JOIN FORNECEDOR F ON P.ID = F.ID ");
-                sbQuery.AppendLine("INNER JOIN ENDERECO E ON E.ID = F.ID_ENDERECO");
+                sbQuery.AppendLine("SELECT P.*, F.* FROM PRODUTO P INNER JOIN FORNECEDOR F ON P.ID_FORNECEDOR = F.ID");
 
                 SqlCommand objCmd = new SqlCommand(sbQuery.ToString(), conn);
                 objCmd.CommandType = CommandType.Text;
@@ -36,6 +34,7 @@ namespace GenerallySport.DAO
                         while (sdReader.Read())
                         {
                             Produto produto = new Produto();
+                            produto.Fornecedor = new Fornecedor();
 
                             int iConvert = 0;
                             decimal decConvert = 0;
@@ -43,12 +42,6 @@ namespace GenerallySport.DAO
 
 
                             if (sdReader["ID"] != null) produto.Id = int.TryParse(sdReader["ID"].ToString(), out iConvert) ? iConvert : 0;
-
-                            if (sdReader["ID_FORNECEDOR"] != null)
-                            {
-                                produto.Fornecedor = new Fornecedor();
-                                produto.Fornecedor.Id = int.TryParse(sdReader["ID_FORNECEDOR"].ToString(), out iConvert) ? iConvert : 0;
-                            }
 
                             if (sdReader["NOME"] != null) 
                                 produto.Nome = sdReader["NOME"].ToString(); 
@@ -70,10 +63,23 @@ namespace GenerallySport.DAO
                             if (sdReader["PRECO_VENDA"] != null) produto.PrecoVenda = decimal.TryParse(sdReader["PRECO_VENDA"].ToString(), out decConvert) ? decConvert : 0;
                              
                             if (sdReader["INATIVO"] != null) produto.Inativo = sdReader["INATIVO"].ToString();
-                             
-                            if (sdReader["FOTOEMSTRING"] != null) produto.Fotoemstring = sdReader["FOTOEMSTRING"].ToString();
-                            
-                            
+
+
+                            if (sdReader["ID_FORNECEDOR"] != null)
+                            {
+                                produto.IdFornecedor = int.TryParse(sdReader["ID_FORNECEDOR"].ToString(), out iConvert) ? iConvert : 0;
+                            }
+
+                            if (sdReader["ID_FORNECEDOR"] != null)
+                            {
+                                produto.Fornecedor.Id = int.TryParse(sdReader["ID_FORNECEDOR"].ToString(), out iConvert) ? iConvert : 0;
+                            }
+
+                            if (sdReader["FANTASIA"] != null) produto.Fornecedor.Fantasia = sdReader["FANTASIA"].ToString();
+                            if (sdReader["CNPJ"] != null) produto.Fornecedor.Cnpj = sdReader["CNPJ"].ToString();
+                            if (sdReader["CELULAR"] != null) produto.Fornecedor.Celular = sdReader["CELULAR"].ToString();
+                            if (sdReader["TELEFONE"] != null) produto.Fornecedor.Telefone = sdReader["TELEFONE"].ToString();
+
                             lstProduto.Add(produto);
                         }
                     }

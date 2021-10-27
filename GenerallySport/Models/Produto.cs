@@ -9,7 +9,7 @@ namespace GenerallySport.Models
     {
         public int Id { get; set; }
         public int IdFornecedor { get; set; }
-        public Fornecedor Fornecedor {  get; set; }
+        public Fornecedor Fornecedor { get; set; }
         public string Nome { get; set; }
         public string Descricao { get; set; }
         public string Categoria { get; set; }
@@ -20,6 +20,5 @@ namespace GenerallySport.Models
         public decimal PrecoUnitario { get; set; }
         public decimal PrecoVenda { get; set; }
         public string Inativo { get; set; }
-        public string Fotoemstring { get; set; }
     }
 }

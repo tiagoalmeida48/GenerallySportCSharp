@@ -92,7 +92,7 @@ namespace GenerallySport.DAO
 
             string query = "INSERT INTO ENDERECO " +
                 "(CEP, LOGRADOURO, NUMERO, COMPLEMENTO, BAIRRO, CIDADE, UF) VALUES" +
-                "(@Cep, @Logradouro, @Numero, @Complemento, @Bairro, @Cidade, @Uf)";
+                "(@Cep, @Logradouro, @Numero, @Complemento, @Bairro, @Cidade, @Uf); SELECT SCOPE_IDENTITY()";
             SqlCommand cmd = new SqlCommand(query.ToString(), connection);
             cmd.CommandType = CommandType.Text;
 
@@ -109,7 +109,9 @@ namespace GenerallySport.DAO
                 if (connection.State == ConnectionState.Closed)
                 {
                     connection.Open();
-                    retorno = cmd.ExecuteNonQuery();
+                    retorno = Convert.ToInt32(cmd.ExecuteScalar());
+
+                    //SqlCommand cmd = new SqlCommand(query.ToString(), connection);
                 }
             }
             catch (Exception e)

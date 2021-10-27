@@ -21,12 +21,7 @@ namespace GenerallySport.Controllers
         public Endereco GetById(int id)
         {
             EnderecoDAO enderecoDAO = new EnderecoDAO();
-            List<Endereco> lstEndereco = enderecoDAO.RetornarListaEndereco();
-
-            List<Endereco> lstEnderecoWhere = lstEndereco.Where(c => c.Id == id).Take(1).ToList();
-
-            Endereco endereco = lstEnderecoWhere.FirstOrDefault();
-            return endereco;
+            return enderecoDAO.RetornarEnderecoPorId(id);
         }
 
         [HttpPost]
