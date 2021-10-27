@@ -1,5 +1,6 @@
 ﻿using GenerallySport.DAO;
 using GenerallySport.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace GenerallySport.Controllers
     public class ClienteController : ControllerBase
     {
         [HttpGet]
+        [Authorize]
         public List<Cliente> Get()
         {
             ClienteDAO clienteDAO = new ClienteDAO();
@@ -18,6 +20,7 @@ namespace GenerallySport.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public Cliente GetById(int id)
         {
             ClienteDAO clienteDAO = new ClienteDAO();
@@ -30,6 +33,7 @@ namespace GenerallySport.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult<IEnumerable<string>> Post([FromBody] Cliente cliente)
         {
             int retorno = 0;
@@ -60,6 +64,7 @@ namespace GenerallySport.Controllers
 
         // PUT api/<ClienteController>/5
         [HttpPut("{id}")]
+        [Authorize]
         public ActionResult<IEnumerable<string>> Put([FromBody] Cliente cliente)
         {
             int retorno = 0;
@@ -76,6 +81,7 @@ namespace GenerallySport.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public ActionResult<IEnumerable<string>> Delete(int id)
         {
             int retorno = 0;

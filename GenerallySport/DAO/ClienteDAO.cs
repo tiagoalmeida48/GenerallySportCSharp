@@ -54,6 +54,12 @@ namespace GenerallySport.DAO
 
                             if (sdReader["TELEFONE"] != null) cliente.Telefone = sdReader["TELEFONE"].ToString();
 
+                            if (sdReader["EMAIL"] != null) cliente.Email = sdReader["EMAIL"].ToString();
+
+                            if (sdReader["SENHA"] != null) cliente.Senha = sdReader["SENHA"].ToString();
+
+                            if (sdReader["CAMINHO_FOTO"] != null) cliente.CaminhoFoto = sdReader["CAMINHO_FOTO"].ToString();
+
                             //ENDEREÇO CLIENTE
                             if (sdReader["ID_ENDERECO"] != null)
                                 cliente.IdEndereco = int.TryParse(sdReader["ID_ENDERECO"].ToString(), out iConvert) ? iConvert : 0;
@@ -112,8 +118,8 @@ namespace GenerallySport.DAO
             int retorno = 0;
 
             string query = "INSERT INTO CLIENTE " +
-                "(NOME, CPF, DATA_NASCIMENTO, SEXO, CELULAR, TELEFONE, ID_ENDERECO) VALUES" +
-                "(@Nome, @Cpf, @DataNascimento, @Sexo, @Celular, @Telefone, @IdEndereco)";
+                "(NOME, CPF, DATA_NASCIMENTO, SEXO, CELULAR, TELEFONE, EMAIL, SENHA, CAMINHO_FOTO, ID_ENDERECO) VALUES" +
+                "(@Nome, @Cpf, @DataNascimento, @Sexo, @Celular, @Telefone, @Email, @Senha, @CaminhoFoto, @IdEndereco)";
             SqlCommand cmd = new SqlCommand(query.ToString(), connection);
             cmd.CommandType = CommandType.Text;
 
@@ -123,6 +129,9 @@ namespace GenerallySport.DAO
             cmd.Parameters.AddWithValue("@Sexo", cliente.Sexo);
             cmd.Parameters.AddWithValue("@Celular", cliente.Celular);
             cmd.Parameters.AddWithValue("@Telefone", cliente.Telefone);
+            cmd.Parameters.AddWithValue("@Email", cliente.Email);
+            cmd.Parameters.AddWithValue("@Senha", cliente.Senha);
+            cmd.Parameters.AddWithValue("@CaminhoFoto", cliente.CaminhoFoto);
             cmd.Parameters.AddWithValue("@IdEndereco", (int)cliente.IdEndereco);
 
             try
@@ -151,7 +160,7 @@ namespace GenerallySport.DAO
             int retorno = 0;
 
             string query = "UPDATE CLIENTE SET " +
-                "NOME = @Nome, CPF = @Cpf, DATA_NASCIMENTO = @DataNascimento, SEXO = @Sexo, CELULAR = @Celular, TELEFONE = @Telefone, ID_ENDERECO = @IdEndereco WHERE ID = @Id";
+                "NOME = @Nome, CPF = @Cpf, DATA_NASCIMENTO = @DataNascimento, SEXO = @Sexo, CELULAR = @Celular, TELEFONE = @Telefone, EMAIL = @Email, SENHA = @Senha, CAMINHO_FOTO = @CaminhoFoto, ID_ENDERECO = @IdEndereco WHERE ID = @Id";
             SqlCommand cmd = new SqlCommand(query.ToString(), connection);
             cmd.CommandType = CommandType.Text;
 
@@ -162,6 +171,9 @@ namespace GenerallySport.DAO
             cmd.Parameters.AddWithValue("@Sexo", cliente.Sexo);
             cmd.Parameters.AddWithValue("@Celular", cliente.Celular);
             cmd.Parameters.AddWithValue("@Telefone", cliente.Telefone);
+            cmd.Parameters.AddWithValue("@Email", cliente.Email);
+            cmd.Parameters.AddWithValue("@Senha", cliente.Senha);
+            cmd.Parameters.AddWithValue("@CaminhoFoto", cliente.CaminhoFoto);
             cmd.Parameters.AddWithValue("@IdEndereco", (int)cliente.IdEndereco);
 
             try
