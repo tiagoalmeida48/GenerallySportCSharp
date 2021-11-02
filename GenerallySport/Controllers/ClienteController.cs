@@ -70,7 +70,7 @@ namespace GenerallySport.Controllers
             int retorno = 0;
             ClienteDAO clienteDAO = new ClienteDAO();
             if (cliente.Id > 0)
-                retorno = clienteDAO.AtualizarCliente(cliente);
+                retorno = clienteDAO.AtualizarC liente(cliente);
             else
                 return new string[] { "Cliente não existe!" };
 
