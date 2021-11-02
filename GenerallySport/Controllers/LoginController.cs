@@ -2,16 +2,18 @@
 using GenerallySport.Models;
 using GenerallySport.Token;
 using GenerallySport.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 
 namespace GenerallySport.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class LoginController : ControllerBase
     {
@@ -25,6 +27,7 @@ namespace GenerallySport.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public IActionResult Login(LoginViewModel loginViewModel)
         {
             try

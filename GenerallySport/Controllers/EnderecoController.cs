@@ -1,5 +1,6 @@
 ﻿using GenerallySport.DAO;
 using GenerallySport.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace GenerallySport.Controllers
     public class EnderecoController : ControllerBase
     {
         [HttpGet]
+        [Authorize]
         public List<Endereco> Get()
         {
             EnderecoDAO enderecoDAO = new EnderecoDAO();
@@ -18,6 +20,7 @@ namespace GenerallySport.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public Endereco GetById(int id)
         {
             EnderecoDAO enderecoDAO = new EnderecoDAO();
@@ -25,6 +28,7 @@ namespace GenerallySport.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult<IEnumerable<string>> Post([FromBody] Endereco endereco)
         {
             int retorno = 0;
@@ -41,6 +45,7 @@ namespace GenerallySport.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public ActionResult<IEnumerable<string>> Put([FromBody] Endereco endereco)
         {
             int retorno = 0;
@@ -57,6 +62,7 @@ namespace GenerallySport.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public ActionResult<IEnumerable<string>> Delete(int id)
         {
             int retorno = 0;

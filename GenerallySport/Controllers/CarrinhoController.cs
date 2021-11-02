@@ -1,8 +1,10 @@
 ﻿using GenerallySport.DAO;
 using GenerallySport.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 
 namespace GenerallySport.Controllers
 {
@@ -11,6 +13,7 @@ namespace GenerallySport.Controllers
     public class CarrinhoController : ControllerBase
     {
         [HttpGet]
+        [Authorize]
         public List<Carrinho> Get()
         {
             CarrinhoDAO carrinhoDAO = new CarrinhoDAO();
@@ -18,6 +21,7 @@ namespace GenerallySport.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult<IEnumerable<string>> Post([FromBody] Carrinho carrinho)
         {
             int retorno = 0;
@@ -34,6 +38,7 @@ namespace GenerallySport.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public ActionResult<IEnumerable<string>> Put([FromBody] Carrinho carrinho)
         {
             int retorno = 0;
@@ -50,6 +55,7 @@ namespace GenerallySport.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public ActionResult<IEnumerable<string>> Delete(int id)
         {
             int retorno = 0;
@@ -67,6 +73,20 @@ namespace GenerallySport.Controllers
                     return new string[] { "Carrinho excluido com sucesso!" };
             }
             return new string[] { string.Empty };
+        }
+
+        [HttpGet("/ObterIdUsuarioLogado")]
+        [Authorize]
+        public ActionResult<string> ObterIdUsuarioLogado()
+        {
+            return User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        }
+
+        [HttpGet("/ObterNomeUsuarioLogado")]
+        [Authorize]
+        public ActionResult<string> ObterNomeUsuarioLogado()
+        {
+            return User.FindFirst(ClaimTypes.Name).Value;
         }
     }
 }
