@@ -13,7 +13,7 @@ using System.Security.Claims;
 
 namespace GenerallySport.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class LoginController : ControllerBase
     {

@@ -22,7 +22,6 @@ namespace GenerallySport.DAO
                 SqlCommand objCmd = new SqlCommand(sbQuery.ToString(), conn);
                 objCmd.CommandType = CommandType.Text;
 
-
                 try
                 {
                     if (conn.State == ConnectionState.Closed)

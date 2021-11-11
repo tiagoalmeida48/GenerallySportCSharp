@@ -99,7 +99,6 @@ namespace GenerallySport
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader()
-                .WithOrigins("http://localhost:44392")
             );
 
             if (env.IsDevelopment())

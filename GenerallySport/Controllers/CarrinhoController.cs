@@ -27,7 +27,10 @@ namespace GenerallySport.Controllers
             int retorno = 0;
             CarrinhoDAO carrinhoDAO = new CarrinhoDAO();
             if (carrinho.Id < 1)
+            {
+                carrinho.IdCliente = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
                 retorno = carrinhoDAO.CadastrarCarrinho(carrinho);
+            }
             else
                 return new string[] { "Carrinho já cadastrado!" };
 
@@ -41,9 +44,11 @@ namespace GenerallySport.Controllers
         [Authorize]
         public ActionResult<IEnumerable<string>> Put([FromBody] Carrinho carrinho)
         {
-            int retorno = 0;
             CarrinhoDAO carrinhoDAO = new CarrinhoDAO();
-            if (carrinho.Id > 0)
+            int retorno = 0;
+            bool verificaIdClienteLogado = carrinho.IdCliente == int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value) ? true : false;
+
+            if (carrinho.Id > 0 && verificaIdClienteLogado)
                 retorno = carrinhoDAO.AtualizarCarrinho(carrinho);
             else
                 return new string[] { "Carrinho não existe!" };
@@ -67,6 +72,9 @@ namespace GenerallySport.Controllers
                 CarrinhoDAO carrinhoDAO = new CarrinhoDAO();
                 Carrinho carrinho = new Carrinho();
                 carrinho.Id = id;
+
+                if(carrinho.IdCliente != int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
+                    return new string[] { "Este produto não pode ser excluido do carrinho!" };
 
                 retorno = carrinhoDAO.DeletarCarrinho(carrinho);
                 if (retorno == 1)

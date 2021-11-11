@@ -156,7 +156,7 @@ namespace GenerallySport.DAO
             return retorno;
         }
 
-        public int AtualizarCliente(Cliente cliente)
+        public int AtualizarCliente(Cliente cliente, bool encriptografar)
         {
             SqlConnection connection = new SqlConnection(this.connectionString);
             EncriptografarSenhas encripSenha = new EncriptografarSenhas(SHA512.Create());
@@ -176,7 +176,7 @@ namespace GenerallySport.DAO
             cmd.Parameters.AddWithValue("@Celular", cliente.Celular);
             cmd.Parameters.AddWithValue("@Telefone", cliente.Telefone);
             cmd.Parameters.AddWithValue("@Email", cliente.Email);
-            cmd.Parameters.AddWithValue("@Senha", encripSenha.EncriptografarSenha(cliente.Senha));
+            cmd.Parameters.AddWithValue("@Senha", encriptografar ? encripSenha.EncriptografarSenha(cliente.Senha) : cliente.Senha);
             cmd.Parameters.AddWithValue("@CaminhoFoto", cliente.CaminhoFoto);
             cmd.Parameters.AddWithValue("@IdEndereco", (int)cliente.IdEndereco);
 

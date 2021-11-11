@@ -11,7 +11,7 @@ namespace GenerallySport.Models
         public string Titulo { get; set; }
         public decimal Preco { get; set; }
         public string CaminhoFoto { get; set; }
-        public string Ativo { get; set; }
+        public string Inativo { get; set; }
         public string Fotoemstring { get; set; }
     }
 }

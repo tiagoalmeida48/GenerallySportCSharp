@@ -68,9 +68,10 @@ namespace GenerallySport.Controllers
         public ActionResult<IEnumerable<string>> Put([FromBody] Cliente cliente)
         {
             int retorno = 0;
+            bool encriptografarSenha = cliente.Senha != null ? true : false;
             ClienteDAO clienteDAO = new ClienteDAO();
             if (cliente.Id > 0)
-                retorno = clienteDAO.AtualizarC liente(cliente);
+                retorno = clienteDAO.AtualizarCliente(cliente, encriptografarSenha);
             else
                 return new string[] { "Cliente não existe!" };
 

@@ -47,7 +47,7 @@ namespace GenerallySport.Controllers
 
                         Cliente cliente = clienteDAO.RetornarClientePorId(idUsuarioLogado);
                         cliente.CaminhoFoto = file.Files.FileName;
-                        clienteDAO.AtualizarCliente(cliente);
+                        clienteDAO.AtualizarCliente(cliente, false);
 
                         return PASTA_UPLOAD + file.Files.FileName;
                     }
