@@ -115,8 +115,11 @@ namespace GenerallySport.DAO
         public List<Produto> RetornarListaProdutoPorNome(string nome)
         {
             List<Produto> lstProduto = RetornarListaProduto();
-
-            List<Produto> produto = lstProduto.Where(c => c.Nome == nome).ToList();
+            List<Produto> produto;
+            if (nome != null)
+                produto = lstProduto.Where(c => c.Nome.ToUpper().Contains(nome.ToUpper())).ToList();
+            else
+                produto = RetornarListaProduto();
             return produto;
         }
     }

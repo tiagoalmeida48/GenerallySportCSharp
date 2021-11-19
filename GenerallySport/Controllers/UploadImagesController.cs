@@ -24,12 +24,12 @@ namespace GenerallySport.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [AllowAnonymous]
         public string Post ([FromForm] FileUpload file)
         {
             if (file.Files.Length > 0)
             {
-                var DIRETORIO = @"C:\Desenvolvimento\C#\Generally Sports";
+                var DIRETORIO = @"C:\Desenvolvimento\C#\Generally Sports"; 
                 var PASTA_UPLOAD = @"\uploadsFotos\";
                 try
                 {

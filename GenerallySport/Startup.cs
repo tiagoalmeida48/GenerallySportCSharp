@@ -96,9 +96,9 @@ namespace GenerallySport
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseCors(x => x
+                .AllowAnyHeader()
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
-                .AllowAnyHeader()
             );
 
             if (env.IsDevelopment())
