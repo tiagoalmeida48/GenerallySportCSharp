@@ -13,7 +13,7 @@ namespace GenerallySport.Controllers
     public class CarrinhoController : ControllerBase
     {
         [HttpGet]
-        [Authorize]
+        [Authorize] 
         public List<Carrinho> Get()
         {
             int idCliente = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
