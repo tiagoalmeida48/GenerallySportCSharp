@@ -10,13 +10,13 @@ namespace GenerallySport.DAO
 {
     public class CarrinhoDAO : DAO
     {
-        public List<Carrinho> RetornarListaCarrinho()
+        public List<Carrinho> RetornarListaCarrinho(int idCliente)
         {
             List<Carrinho> lstCarrinho = new List<Carrinho>();
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 StringBuilder sbQuery = new StringBuilder();
-                sbQuery.AppendLine("SELECT CARRINHO.*, PRODUTO.* FROM CARRINHO JOIN PRODUTO ON PRODUTO.ID = CARRINHO.ID_PRODUTO");
+                sbQuery.AppendLine("SELECT CARRINHO.*, PRODUTO.* FROM CARRINHO JOIN PRODUTO ON PRODUTO.ID = CARRINHO.ID_PRODUTO WHERE ID_CLIENTE = " + idCliente);
 
                 SqlCommand objCmd = new SqlCommand(sbQuery.ToString(), conn);
                 objCmd.CommandType = CommandType.Text;
@@ -72,9 +72,9 @@ namespace GenerallySport.DAO
 
                             if (sdReader["CAMINHO_FOTO"] != null) carrinho.Produto.CaminhoFoto = sdReader["CAMINHO_FOTO"].ToString();
 
-                            if (sdReader["PRECO_UNITARIO"] != null) carrinho.Produto.PrecoUnitario = decimal.TryParse(sdReader["PRECO_UNITARIO"].ToString(), out decConvert) ? iConvert : 0;
+                            if (sdReader["PRECO_UNITARIO"] != null) carrinho.Produto.PrecoUnitario = decimal.TryParse(sdReader["PRECO_UNITARIO"].ToString(), out decConvert) ? decConvert : 0;
 
-                            if (sdReader["PRECO_VENDA"] != null) carrinho.Produto.PrecoVenda = decimal.TryParse(sdReader["PRECO_VENDA"].ToString(), out decConvert) ? iConvert : 0;
+                            if (sdReader["PRECO_VENDA"] != null) carrinho.Produto.PrecoVenda = decimal.TryParse(sdReader["PRECO_VENDA"].ToString(), out decConvert) ? decConvert : 0;
 
                             if (sdReader["INATIVO"] != null) carrinho.Produto.Inativo = sdReader["INATIVO"].ToString();
 
@@ -101,6 +101,13 @@ namespace GenerallySport.DAO
             return lstCarrinho;
         }
 
+        public Carrinho RetornarCarrinhoProdutoPorId(int idProduto, int idCliente)
+        {
+            List<Carrinho> lstCarrinho = RetornarListaCarrinho(idCliente);
+            Carrinho carrinho = lstCarrinho.Where(c => c.IdProduto == idProduto).FirstOrDefault();
+            return carrinho;
+        }
+
         public int CadastrarCarrinho(Carrinho carrinho)
         {
             SqlConnection connection = new SqlConnection(this.connectionString);
@@ -115,7 +122,7 @@ namespace GenerallySport.DAO
 
             cmd.Parameters.AddWithValue("@IdCliente", carrinho.IdCliente);
             cmd.Parameters.AddWithValue("@IdProduto", carrinho.IdProduto);
-            cmd.Parameters.AddWithValue("@Qtde", carrinho.Qtde != 0 ? carrinho.Qtde : 1);
+            cmd.Parameters.AddWithValue("@Qtde", carrinho.Qtde);
             cmd.Parameters.AddWithValue("@Preco", carrinho.Preco);
 
             try
@@ -152,7 +159,7 @@ namespace GenerallySport.DAO
             cmd.Parameters.AddWithValue("@Id", carrinho.Id);
             cmd.Parameters.AddWithValue("@IdCliente", carrinho.IdCliente);
             cmd.Parameters.AddWithValue("@IdProduto", carrinho.IdProduto);
-            cmd.Parameters.AddWithValue("@Qtde", carrinho.Qtde != 0 ? carrinho.Qtde : 1);
+            cmd.Parameters.AddWithValue("@Qtde", carrinho.Qtde);
             cmd.Parameters.AddWithValue("@Preco", carrinho.Preco);
 
             try

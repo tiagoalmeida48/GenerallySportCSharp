@@ -16,8 +16,21 @@ namespace GenerallySport.Controllers
         [Authorize]
         public List<Carrinho> Get()
         {
+            int idCliente = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             CarrinhoDAO carrinhoDAO = new CarrinhoDAO();
-            return carrinhoDAO.RetornarListaCarrinho();
+            return carrinhoDAO.RetornarListaCarrinho(idCliente);
+        }
+
+        [HttpGet]
+        [Route("{IdProduto}")]
+        [AllowAnonymous]
+        public Carrinho GetIdProdutoCarrinho([FromRoute] int IdProduto)
+        {
+            int idCliente = int.Parse(ObterIdUsuarioLogado());
+            CarrinhoDAO carrinhoDAO = new CarrinhoDAO();
+
+            return carrinhoDAO.RetornarCarrinhoProdutoPorId(IdProduto, idCliente);
+
         }
 
         [HttpPost]
@@ -46,9 +59,9 @@ namespace GenerallySport.Controllers
         {
             CarrinhoDAO carrinhoDAO = new CarrinhoDAO();
             int retorno = 0;
-            bool verificaIdClienteLogado = carrinho.IdCliente == int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value) ? true : false;
+            carrinho.IdCliente = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            if (carrinho.Id > 0 && verificaIdClienteLogado)
+            if (carrinho.Id > 0)
                 retorno = carrinhoDAO.AtualizarCarrinho(carrinho);
             else
                 return new string[] { "Carrinho não existe!" };
@@ -83,11 +96,9 @@ namespace GenerallySport.Controllers
             return new string[] { string.Empty };
         }
 
-        [HttpGet("/ObterIdUsuarioLogado")]
-        [Authorize]
-        public ActionResult<string> ObterIdUsuarioLogado()
+        private string ObterIdUsuarioLogado()
         {
-            return User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return User.FindFirst(ClaimTypes.NameIdentifier).Value;   
         }
 
         [HttpGet("/ObterNomeUsuarioLogado")]
