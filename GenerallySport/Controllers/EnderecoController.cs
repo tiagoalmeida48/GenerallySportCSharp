@@ -28,7 +28,7 @@ namespace GenerallySport.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [AllowAnonymous]
         public ActionResult<IEnumerable<string>> Post([FromBody] Endereco endereco)
         {
             int retorno = 0;

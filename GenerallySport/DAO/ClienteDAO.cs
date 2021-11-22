@@ -113,6 +113,13 @@ namespace GenerallySport.DAO
             return cliente;
         }
 
+        public Cliente RetornarClientePorCpf(string cpf)
+        {
+            List<Cliente> lstCliente = RetornarListaCliente();
+            Cliente cliente = lstCliente.Where(c => c.Cpf == cpf).FirstOrDefault();
+            return cliente;
+        }
+
         public int CadastrarCliente(Cliente cliente)
         {
             SqlConnection connection = new SqlConnection(this.connectionString);
