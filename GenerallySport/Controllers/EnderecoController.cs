@@ -38,7 +38,7 @@ namespace GenerallySport.Controllers
             else
                 return new string[] { "Endereco já cadastrado!" };
 
-            if (retorno == 1)
+            if (retorno > 1)
                 return new string[] { "Endereco inserido com sucesso!" };
 
             return new string[] { "Endereco não inserido!" };
