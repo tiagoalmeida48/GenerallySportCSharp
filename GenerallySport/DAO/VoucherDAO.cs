@@ -131,7 +131,19 @@ namespace GenerallySport.DAO
 
         public int CadastrarVoucherPedidoVenda(PedidoVendaVoucher pedidoVendaVoucher)
         {
-           // pedidoVendaVoucher.IdVoucher = id;
+            Random randNum = new Random();
+            var numeroValido = randNum.Next(10000, 100000).ToString();
+            var existeNumero = RetornarListaPedidoVoucher(numeroValido);
+          //  var existeNumero1 = existeNumero.Select(c => c.Validado == numeroValido).ToList();
+
+            while (existeNumero.Equals(1)) 
+
+            {
+
+             numeroValido = randNum.Next(10000, 100000).ToString();
+
+            } 
+
             SqlConnection connection = new SqlConnection(this.connectionString);
 
             int retorno = 0;
@@ -148,7 +160,7 @@ namespace GenerallySport.DAO
             cmd.Parameters.AddWithValue("@SituacaoPedidovenda", pedidoVendaVoucher.SituacaoPedidovenda);
             cmd.Parameters.AddWithValue("@CondicaoPagamento", pedidoVendaVoucher.Condicaopagamento);
             cmd.Parameters.AddWithValue("@ValorFinal", pedidoVendaVoucher.ValorFinal);
-            cmd.Parameters.AddWithValue("@Validado", pedidoVendaVoucher.ValorFinal);
+            cmd.Parameters.AddWithValue("@Validado", numeroValido);
 
             try
             {
@@ -170,5 +182,121 @@ namespace GenerallySport.DAO
             return retorno;
         }
 
+        public List<PedidoVendaVoucher> RetornarListaPedidoVoucher()
+        {
+            List<PedidoVendaVoucher> lstPedidoVoucher = new List<PedidoVendaVoucher>();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                StringBuilder sbQuery = new StringBuilder();
+                sbQuery.AppendLine("SELECT * FROM PEDIDOVENDA_VOUCHER");
+
+                SqlCommand objCmd = new SqlCommand(sbQuery.ToString(), conn);
+                objCmd.CommandType = CommandType.Text;
+
+                try
+                {
+                    if (conn.State == ConnectionState.Closed)
+                    {
+                        conn.Open();
+
+                        SqlDataReader sdReader = objCmd.ExecuteReader();
+
+                        while (sdReader.Read())
+                        {
+                            PedidoVendaVoucher pedidoVoucher = new PedidoVendaVoucher();
+
+                            int iConvert = 0;
+                            decimal decConvert = 0;
+                            DateTime dtConvert = DateTime.MinValue;
+
+                            if (sdReader["ID"] != null) pedidoVoucher.Id = int.TryParse(sdReader["ID"].ToString(), out iConvert) ? iConvert : 0;
+
+                            if (sdReader["ID_VOUCHER"] != null)
+                                pedidoVoucher.IdVoucher = int.TryParse(sdReader["ID_VOUCHER"].ToString(), out iConvert) ? iConvert : 0;
+
+                            if (sdReader["ID_CLIENTE"] != null) pedidoVoucher.IdCliente = int.TryParse(sdReader["ID_CLIENTE"].ToString(), out iConvert) ? iConvert : 0;
+
+                            if (sdReader["DATA_PEDIDOVENDA"] != null) pedidoVoucher.DataPedidovenda = DateTime.TryParse(sdReader["DATA_PEDIDOVENDA"].ToString(), out dtConvert) ? dtConvert : DateTime.MinValue;
+
+                            if (sdReader["SITUACAO_PEDIDOVENDA"] != null)
+                                pedidoVoucher.SituacaoPedidovenda = sdReader["SITUACAO_PEDIDOVENDA"].ToString();
+
+                            if (sdReader["CONDICAO_PAGAMENTO"] != null)
+                                pedidoVoucher.Condicaopagamento = sdReader["CONDICAO_PAGAMENTO"].ToString();
+
+                            if (sdReader["VALOR_FINAL"] != null) pedidoVoucher.ValorFinal = decimal.TryParse(sdReader["VALOR_FINAL"].ToString(), out decConvert) ? decConvert : 0;
+
+                            if (sdReader["VALIDADO"] != null) pedidoVoucher.Validado = sdReader["VALIDADO"].ToString();
+
+                            lstPedidoVoucher.Add(pedidoVoucher);
+                        }
+                    }
+
+                }
+                catch (SqlException ex)
+                {
+                    throw ex;
+                }
+                catch (Exception ex1)
+                {
+
+                    throw ex1;
+                }
+                finally
+                {
+                    if (conn.State == ConnectionState.Open)
+                    {
+                        conn.Close();
+                    }
+                }
+            }
+            return lstPedidoVoucher;
+        }
+
+        public List<PedidoVendaVoucher> RetornarListaPedidoVoucher(string validado)
+        {
+            List<PedidoVendaVoucher> lstPedidoVoucher = RetornarListaPedidoVoucher();
+
+            List<PedidoVendaVoucher> voucherPedido = lstPedidoVoucher.Where(c => c.Validado == validado).ToList();
+            return voucherPedido;
+        }
+
+        public int VoucherValidado(int id)
+        {
+            PedidoVendaVoucher voucherPedido = new PedidoVendaVoucher();
+            voucherPedido.Id = id;
+            var validado = "VALIDADO";
+
+            SqlConnection connection = new SqlConnection(this.connectionString);
+
+            int retorno = 0;
+
+            string query = "UPDATE PEDIDOVENDA_VOUCHER SET " +
+                "VALIDADO = @Validado WHERE ID = @Id";
+            SqlCommand cmd = new SqlCommand(query.ToString(), connection);
+            cmd.CommandType = CommandType.Text;
+
+            cmd.Parameters.AddWithValue("@Id", voucherPedido.Id);
+            cmd.Parameters.AddWithValue("@Validado", validado);
+            // cmd.Parameters.AddWithValue("@PrecoVenda", precoVenda);
+
+            try
+            {
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                    retorno = cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open) connection.Close();
+            }
+            return retorno;
+        }
     }
 }
