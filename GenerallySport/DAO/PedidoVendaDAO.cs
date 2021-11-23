@@ -145,7 +145,7 @@ namespace GenerallySport.DAO
                 if (connection.State == ConnectionState.Open) connection.Close();
             }
 
-            BaixaEstoque(itensPedidoVenda.IdProduto, itensPedidoVenda.Qtde, itensPedidoVenda.Preco);
+            BaixaEstoque(itensPedidoVenda.IdProduto, itensPedidoVenda.Qtde);
             return retorno;
         }
 
@@ -190,12 +190,12 @@ namespace GenerallySport.DAO
             return retorno;
         }
 
-        public int BaixaEstoque(int id, int? qtde, decimal preco)
+        public int BaixaEstoque(int id, int? qtde)
         {
             Produto produto = new Produto();
             produto.Id = id;
             var qtdeVendida = qtde;
-            var precoVenda = preco;
+          //  var precoVenda = preco;
             //produto.QtdeEstoqueatual -=  qtde;
             //produto.PrecoVenda -= preco;
 
@@ -204,13 +204,13 @@ namespace GenerallySport.DAO
             int retorno = 0;
 
             string query = "UPDATE PRODUTO SET " +
-                "QTDE_ESTOQUEATUAL = QTDE_ESTOQUEATUAL - @QtdeEstoqueatual, PRECO_VENDA = PRECO_VENDA - @PrecoVenda WHERE ID = @Id"; 
+                "QTDE_ESTOQUEATUAL = QTDE_ESTOQUEATUAL - @QtdeEstoqueatual WHERE ID = @Id"; 
             SqlCommand cmd = new SqlCommand(query.ToString(), connection);
             cmd.CommandType = CommandType.Text;
 
             cmd.Parameters.AddWithValue("@Id", produto.Id);
             cmd.Parameters.AddWithValue("@QtdeEstoqueatual", qtdeVendida);
-            cmd.Parameters.AddWithValue("@PrecoVenda", precoVenda);
+           // cmd.Parameters.AddWithValue("@PrecoVenda", precoVenda);
 
             try
             {

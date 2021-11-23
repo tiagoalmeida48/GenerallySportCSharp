@@ -40,5 +40,55 @@ namespace GenerallySports.Controllers
             return voucherDAO.RetornarListaVoucherPorTitulo(titulo);
 
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult<IEnumerable<string>> Post([FromBody] Voucher voucher)
+        {
+            int retorno = 0;
+            VoucherDAO voucherDAO = new VoucherDAO();
+
+            if (voucher.Id < 1)
+            {
+                retorno = voucherDAO.CadastrarVoucher(voucher);
+
+
+            }
+            else
+                return new string[] { "Voucher já cadastrado!" };
+
+            if (retorno == 1)
+            {
+
+                return new string[] { "Voucher inserido com sucesso!" };
+            }
+
+            return new string[] { "Voucher não inserido!" };
+        }
+
+        [HttpPost("pedidovenda")]
+        [AllowAnonymous]
+        public ActionResult<IEnumerable<string>> Post([FromBody] PedidoVendaVoucher pedidoVendaVoucher)
+        {
+            int retorno = 0;
+            VoucherDAO voucherDAO = new VoucherDAO();
+
+            if (pedidoVendaVoucher.Id < 1)
+            {
+            //    var ultimoVoucher = voucherDAO.RetornarListaVoucher().LastOrDefault();
+                retorno = voucherDAO.CadastrarVoucherPedidoVenda(pedidoVendaVoucher);
+
+            }
+            else
+                return new string[] { "Voucher pedido já cadastrado!" };
+
+            if (retorno == 1)
+            {
+
+                return new string[] { "Voucher pedido inserido com sucesso!" };
+            }
+
+            return new string[] { "Voucher pedido de venda não inserido!" };
+        }
     }
 }

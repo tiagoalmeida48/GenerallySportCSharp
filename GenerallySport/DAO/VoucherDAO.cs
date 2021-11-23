@@ -88,5 +88,87 @@ namespace GenerallySport.DAO
             List<Voucher> voucher = lstVoucher.Where(c => c.Titulo == titulo).ToList();
             return voucher;
         }
+
+        public int CadastrarVoucher(Voucher voucher)
+        {
+            SqlConnection connection = new SqlConnection(this.connectionString);
+
+            int retorno = 0;
+
+            string query = "INSERT INTO VOUCHER " +
+                "(TITULO, PRECO, CAMINHO_FOTO, INATIVO) VALUES" +
+                "(@Titulo, @Preco, @CaminhoFoto, @Inativo);";
+            SqlCommand cmd = new SqlCommand(query.ToString(), connection);
+            cmd.CommandType = CommandType.Text;
+
+            cmd.Parameters.AddWithValue("@Titulo", voucher.Titulo);
+            cmd.Parameters.AddWithValue("@Preco", voucher.Preco);
+            cmd.Parameters.AddWithValue("@CaminhoFoto", voucher.CaminhoFoto);
+            cmd.Parameters.AddWithValue("@Inativo", voucher.Inativo);
+
+
+            try
+            {
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                    retorno = cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open) connection.Close();
+            }
+
+
+            return retorno;
+        }
+
+
+        public int CadastrarVoucherPedidoVenda(PedidoVendaVoucher pedidoVendaVoucher)
+        {
+           // pedidoVendaVoucher.IdVoucher = id;
+            SqlConnection connection = new SqlConnection(this.connectionString);
+
+            int retorno = 0;
+
+            string query = "INSERT INTO PEDIDOVENDA_VOUCHER " +
+                "(ID_VOUCHER, ID_CLIENTE, DATA_PEDIDOVENDA, SITUACAO_PEDIDOVENDA, CONDICAO_PAGAMENTO, VALOR_FINAL, VALIDADO) VALUES" +
+                "(@IdVoucher, @IdCliente, @DataPedidovenda, @SituacaoPedidovenda, @CondicaoPagamento, @ValorFinal, @Validado);";
+            SqlCommand cmd = new SqlCommand(query.ToString(), connection);
+            cmd.CommandType = CommandType.Text;
+
+            cmd.Parameters.AddWithValue("@IdVoucher", pedidoVendaVoucher.IdVoucher);
+            cmd.Parameters.AddWithValue("@IdCliente", pedidoVendaVoucher.IdCliente);
+            cmd.Parameters.AddWithValue("@DataPedidovenda", pedidoVendaVoucher.DataPedidovenda);
+            cmd.Parameters.AddWithValue("@SituacaoPedidovenda", pedidoVendaVoucher.SituacaoPedidovenda);
+            cmd.Parameters.AddWithValue("@CondicaoPagamento", pedidoVendaVoucher.Condicaopagamento);
+            cmd.Parameters.AddWithValue("@ValorFinal", pedidoVendaVoucher.ValorFinal);
+            cmd.Parameters.AddWithValue("@Validado", pedidoVendaVoucher.ValorFinal);
+
+            try
+            {
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                    retorno = cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open) connection.Close();
+            }
+
+            return retorno;
+        }
+
     }
 }
