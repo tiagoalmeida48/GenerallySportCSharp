@@ -43,9 +43,8 @@ namespace GenerallySport.Controllers
 
                         // PESQUISAR O USUARIO LOGADO E GRAVAR A FOTO DO USUARIO LOGADO
                         ClienteDAO clienteDAO = new ClienteDAO();
-                        var idUsuarioLogado = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-                        Cliente cliente = clienteDAO.RetornarClientePorId(idUsuarioLogado);
+                        Cliente cliente = clienteDAO.RetornarClientePorCpf(file.CPF);
                         cliente.CaminhoFoto = file.Files.FileName;
                         clienteDAO.AtualizarCliente(cliente, false);
 
