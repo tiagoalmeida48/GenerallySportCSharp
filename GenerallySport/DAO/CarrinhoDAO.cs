@@ -43,11 +43,12 @@ namespace GenerallySport.DAO
 
                             if (sdReader["ID_CLIENTE"] != null)
                                 carrinho.IdCliente = int.TryParse(sdReader["ID_CLIENTE"].ToString(), out iConvert) ? iConvert : 0;
+
                             if (sdReader["QTDE"] != null)
                                 carrinho.Qtde = int.TryParse(sdReader["QTDE"].ToString(), out iConvert) ? iConvert : 1;
 
                             if (sdReader["PRECO"] != null)
-                                carrinho.Preco = decimal.TryParse(sdReader["PRECO"].ToString(), out decConvert) ? iConvert : 0;
+                                carrinho.Preco = decimal.TryParse(sdReader["PRECO"].ToString(), out decConvert) ? decConvert : 0;
 
                             if (sdReader["ID_PRODUTO"] != null)
                                 carrinho.IdProduto = int.TryParse(sdReader["ID_PRODUTO"].ToString(), out iConvert) ? iConvert : 0;
