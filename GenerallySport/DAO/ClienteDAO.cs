@@ -5,8 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
+using EmailMessage = GenerallySport.Models.EmailMessage;
 
 namespace GenerallySport.DAO
 {
@@ -236,5 +239,82 @@ namespace GenerallySport.DAO
             }
             return retorno;
         }
-    }
+
+        public int ResetaSenha(int id, string senha)
+        {
+            Cliente cliente = new Cliente();
+            cliente = RetornarClientePorId(id);
+            var emailCliente = cliente.Email;
+
+            SqlConnection connection = new SqlConnection(this.connectionString);
+            EncriptografarSenhas encripSenha = new EncriptografarSenhas(SHA512.Create());
+
+            int retorno = 0;
+
+            string query = "UPDATE CLIENTE SET " +
+                " SENHA = @Senha WHERE ID = @id";
+            SqlCommand cmd = new SqlCommand(query.ToString(), connection);
+            cmd.CommandType = CommandType.Text;
+
+            cmd.Parameters.AddWithValue("@id", id);
+            cmd.Parameters.AddWithValue("@Senha", encripSenha.EncriptografarSenha(cliente.Senha));
+
+
+            try
+            {
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                    retorno = cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open) connection.Close();
+            }
+            return retorno;
+        }
+
+        public int EnviarEmail(int id)
+        {
+            int retorno = 0;
+            Cliente cliente = new Cliente();
+            // cliente.Id = id;
+            cliente = RetornarClientePorId(id);
+            var emailCliente = cliente.Email;
+
+            var fromAddress = new MailAddress("generallysport@gmail.com", "Generally");
+            var toAddress = new MailAddress(emailCliente, "Cliente");
+            const string fromPassword = "generally@2021";
+            // const string fromPassword = "fromPassword";
+            const string subject = "Nova Senha";
+            const string body = "Escrever a mensagem aqui";
+
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+            };
+            using (var message = new MailMessage(fromAddress, toAddress)
+            {
+                Subject = subject,
+                Body = body
+            })
+            {
+                smtp.Send(message);
+                return retorno = 1;
+            }
+
+            
+        }
+
+        }
 }
