@@ -101,5 +101,41 @@ namespace GenerallySport.Controllers
             }
             return new string[] { string.Empty };
         }
+
+        [HttpPost("enviarEmail")]
+        [AllowAnonymous]
+        public ActionResult<IEnumerable<string>> SendEmail(int id)
+        {
+            int retorno = 0;
+            ClienteDAO clienteEmailDAO = new ClienteDAO();
+
+            retorno = clienteEmailDAO.EnviarEmail(id);          
+
+            if (retorno == 1)
+            {
+
+                return new string[] { "E-mail enviado com sucesso!" };
+            }
+
+            return new string[] { "E-mail não enviado!" };
+        }
+
+        [HttpPut("resetarSenha")]
+        [AllowAnonymous]
+        public ActionResult<IEnumerable<string>> ResetarSenha(int id, string senha)
+        {
+            int retorno = 0;
+            ClienteDAO clienteEmailDAO = new ClienteDAO();
+
+            retorno = clienteEmailDAO.ResetaSenha(id, senha);
+
+            if (retorno == 1)
+            {
+
+                return new string[] { "Senha alterada com sucesso!" };
+            }
+
+            return new string[] { "Senha não alterada!" };
+        }
     }
 }
