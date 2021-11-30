@@ -17,7 +17,7 @@ namespace GenerallySport.Controllers
         public List<Carrinho> Get()
         {
             int idCliente = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            CarrinhoDAO carrinhoDAO = new CarrinhoDAO();
+            CarrinhoDAO carrinhoDAO = new();
             return carrinhoDAO.RetornarListaCarrinho(idCliente);
         }
 
@@ -26,8 +26,8 @@ namespace GenerallySport.Controllers
         [AllowAnonymous]
         public Carrinho GetIdProdutoCarrinho([FromRoute] int IdProduto)
         {
-            int idCliente = int.Parse(ObterIdUsuarioLogado());
-            CarrinhoDAO carrinhoDAO = new CarrinhoDAO();
+            int idCliente = int.Parse(BuscarIdUsuarioLogado());
+            CarrinhoDAO carrinhoDAO = new();
 
             return carrinhoDAO.RetornarCarrinhoProdutoPorId(IdProduto, idCliente);
 
@@ -37,12 +37,24 @@ namespace GenerallySport.Controllers
         [Authorize]
         public ActionResult<IEnumerable<string>> Post([FromBody] Carrinho carrinho)
         {
-            int retorno = 0;
-            CarrinhoDAO carrinhoDAO = new CarrinhoDAO();
+            int retorno;
+            CarrinhoDAO carrinhoDAO = new();
             if (carrinho.Id < 1)
             {
                 carrinho.IdCliente = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                retorno = carrinhoDAO.CadastrarCarrinho(carrinho);
+
+                var carrinhoDuplicado = carrinhoDAO.RetornarCarrinhoProdutoPorId(carrinho.IdProduto, carrinho.IdCliente);
+
+                if (carrinhoDuplicado != null)
+                {
+                    carrinho.Id = carrinhoDuplicado.Id;
+                    carrinho.Qtde += 1;
+                    retorno = carrinhoDAO.AtualizarCarrinho(carrinho);
+                }
+                else
+                {
+                    retorno = carrinhoDAO.CadastrarCarrinho(carrinho);
+                }
             }
             else
                 return new string[] { "Carrinho já cadastrado!" };
@@ -57,8 +69,8 @@ namespace GenerallySport.Controllers
         [Authorize]
         public ActionResult<IEnumerable<string>> Put([FromBody] Carrinho carrinho)
         {
-            CarrinhoDAO carrinhoDAO = new CarrinhoDAO();
-            int retorno = 0;
+            CarrinhoDAO carrinhoDAO = new();
+            int retorno;
             carrinho.IdCliente = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
             if (carrinho.Id > 0)
@@ -76,17 +88,19 @@ namespace GenerallySport.Controllers
         [Authorize]
         public ActionResult<IEnumerable<string>> Delete(int id)
         {
-            int retorno = 0;
+            int retorno;
 
             if (id == 0)
                 return new string[] { "Carrinho invalido!" };
             else
             {
-                CarrinhoDAO carrinhoDAO = new CarrinhoDAO();
-                Carrinho carrinho = new Carrinho();
+                CarrinhoDAO carrinhoDAO = new();
+                Carrinho carrinho = carrinhoDAO.RetornarCarrinhoPorId(id);
+
+                
                 carrinho.Id = id;
 
-                if(carrinho.IdCliente != int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
+                if (carrinho.IdCliente != int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
                     return new string[] { "Este produto não pode ser excluido do carrinho!" };
 
                 retorno = carrinhoDAO.DeletarCarrinho(carrinho);
@@ -96,16 +110,9 @@ namespace GenerallySport.Controllers
             return new string[] { string.Empty };
         }
 
-        private string ObterIdUsuarioLogado()
+        private string BuscarIdUsuarioLogado()
         {
             return User.FindFirst(ClaimTypes.NameIdentifier).Value;   
-        }
-
-        [HttpGet("/ObterNomeUsuarioLogado")]
-        [Authorize]
-        public ActionResult<string> ObterNomeUsuarioLogado()
-        {
-            return User.FindFirst(ClaimTypes.Name).Value;
         }
     }
 }

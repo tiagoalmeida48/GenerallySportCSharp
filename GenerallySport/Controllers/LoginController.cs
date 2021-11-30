@@ -43,7 +43,7 @@ namespace GenerallySport.Controllers
                         Data = new
                         {
                             Token = token,
-                            TokenExpires = DateTime.UtcNow.AddHours(int.Parse(_configuration["Jwt:HoursToExpire"])),
+                    TokenExpires = DateTime.UtcNow.AddHours(int.Parse(_configuration["Jwt:HoursToExpire"])),
                         }
                     });
                 }
@@ -56,6 +56,20 @@ namespace GenerallySport.Controllers
             {
                 return StatusCode(500, "Ocorreu algum erro interno na aplicação, por favor tente novamente");
             }
+        }
+
+        [HttpGet("/ObterIdUsuarioLogado")]
+        [Authorize]
+        public string ObterIdUsuarioLogado()
+        {
+            return User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        }
+
+        [HttpGet("/ObterNomeUsuarioLogado")]
+        [Authorize]
+        public string ObterNomeUsuarioLogado()
+        {
+            return User.FindFirst(ClaimTypes.Name).Value;
         }
     }
 }
