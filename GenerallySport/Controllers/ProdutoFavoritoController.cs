@@ -12,7 +12,7 @@ namespace GenerallySport.Controllers
     public class ProdutoFavoritoController : ControllerBase
     {
         [HttpGet]
-     //   [Authorize]
+        [Authorize]
         public List<ProdutoFavorito> Get()
         {
             ProdutoFavoritoDAO produtoFavoritoDAO = new ProdutoFavoritoDAO();
@@ -20,7 +20,7 @@ namespace GenerallySport.Controllers
         }
 
         [HttpGet("{id}")]
-     //   [Authorize]
+        [Authorize]
         public ProdutoFavorito GetById([FromRoute] int id)
         {
             ProdutoFavoritoDAO produtoFavoritoDAO = new ProdutoFavoritoDAO();
@@ -59,7 +59,7 @@ namespace GenerallySport.Controllers
         }
 
         [HttpDelete("{id}")]
-      //  [Authorize]
+        [Authorize]
         public ActionResult<IEnumerable<string>> Delete(int id)
         {
             int retorno = 0;
