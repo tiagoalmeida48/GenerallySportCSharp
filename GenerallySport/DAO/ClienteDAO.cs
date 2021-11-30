@@ -257,7 +257,7 @@ namespace GenerallySport.DAO
             cmd.CommandType = CommandType.Text;
 
             cmd.Parameters.AddWithValue("@id", id);
-            cmd.Parameters.AddWithValue("@Senha", encripSenha.EncriptografarSenha(cliente.Senha));
+            cmd.Parameters.AddWithValue("@Senha", encripSenha.EncriptografarSenha(senha));
 
 
             try
