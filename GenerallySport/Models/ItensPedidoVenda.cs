@@ -18,6 +18,8 @@ namespace GenerallySport.Models
         [Required(ErrorMessage = "O número do produto é obrigatório")]
         public int IdProduto { get; set; }
 
+        public Produto Produto { get; set; }
+
         public int? Qtde { get; set; }
 
         [Required(ErrorMessage = "O preço é obrigatório")]

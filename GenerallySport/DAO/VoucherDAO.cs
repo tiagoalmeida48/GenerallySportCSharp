@@ -133,7 +133,7 @@ namespace GenerallySport.DAO
         {
             Random randNum = new Random();
             var numeroValido = randNum.Next(10000, 100000).ToString();
-            var existeNumero = RetornarListaPedidoVoucher(numeroValido);
+            var existeNumero = RetornarListaPedidoVoucherPorCodigo(numeroValido);
           //  var existeNumero1 = existeNumero.Select(c => c.Validado == numeroValido).ToList();
 
             while (existeNumero.Equals(1)) 
@@ -253,7 +253,7 @@ namespace GenerallySport.DAO
             return lstPedidoVoucher;
         }
 
-        public List<PedidoVendaVoucher> RetornarListaPedidoVoucher(string validado)
+        public List<PedidoVendaVoucher> RetornarListaPedidoVoucherPorCodigo(string validado)
         {
             List<PedidoVendaVoucher> lstPedidoVoucher = RetornarListaPedidoVoucher();
 
@@ -261,10 +261,11 @@ namespace GenerallySport.DAO
             return voucherPedido;
         }
 
-        public int VoucherValidado(int id)
+        public string VoucherValidado(string codigo)
         {
-            PedidoVendaVoucher voucherPedido = new PedidoVendaVoucher();
-            voucherPedido.Id = id;
+           // PedidoVendaVoucher voucherPedido = new PedidoVendaVoucher();
+          //  var voucherPedidoCod = RetornarListaPedidoVoucherPorCodigo(codigo).LastOrDefault();
+           // var voucherPedido = voucherPedidoCod.Id.ToString();
             var validado = "VALIDADO";
 
             SqlConnection connection = new SqlConnection(this.connectionString);
@@ -272,13 +273,12 @@ namespace GenerallySport.DAO
             int retorno = 0;
 
             string query = "UPDATE PEDIDOVENDA_VOUCHER SET " +
-                "VALIDADO = @Validado WHERE ID = @Id";
+                "VALIDADO = @Validado WHERE VALIDADO = @Codigo";
             SqlCommand cmd = new SqlCommand(query.ToString(), connection);
             cmd.CommandType = CommandType.Text;
 
-            cmd.Parameters.AddWithValue("@Id", voucherPedido.Id);
+            cmd.Parameters.AddWithValue("@Codigo", codigo);
             cmd.Parameters.AddWithValue("@Validado", validado);
-            // cmd.Parameters.AddWithValue("@PrecoVenda", precoVenda);
 
             try
             {
@@ -296,7 +296,7 @@ namespace GenerallySport.DAO
             {
                 if (connection.State == ConnectionState.Open) connection.Close();
             }
-            return retorno;
+            return retorno.ToString();
         }
     }
 }

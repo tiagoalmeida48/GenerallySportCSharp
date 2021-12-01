@@ -230,5 +230,114 @@ namespace GenerallySport.DAO
             }
             return retorno;
         }
+
+        public List<ItensPedidoVenda> RetornarListaItensPedidoVenda()
+        {
+            List<ItensPedidoVenda> lstItensPedidoVenda = new List<ItensPedidoVenda>();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                StringBuilder sbQuery = new StringBuilder();
+                sbQuery.AppendLine("SELECT I.*, V.*, P.* FROM ITENS_PEDIDOVENDA I INNER JOIN PEDIDOVENDA V ON I.ID_PEDIDOVENDA = V.ID INNER JOIN PRODUTO P ON I.ID_PRODUTO = P.ID");
+
+                SqlCommand objCmd = new SqlCommand(sbQuery.ToString(), conn);
+                objCmd.CommandType = CommandType.Text;
+
+                try
+                {
+                    if (conn.State == ConnectionState.Closed)
+                    {
+                        conn.Open();
+
+                        SqlDataReader sdReader = objCmd.ExecuteReader();
+
+                        while (sdReader.Read())
+                        {
+                            ItensPedidoVenda itensPedidoVenda = new ItensPedidoVenda();
+                            itensPedidoVenda.PedidoVenda = new PedidoVenda();
+                            itensPedidoVenda.Produto = new Produto();
+
+                            int iConvert = 0;
+                            decimal decConvert = 0;
+                            DateTime dtConvert = DateTime.MinValue;
+
+
+                            if (sdReader["ID"] != null) itensPedidoVenda.Id = int.TryParse(sdReader["ID"].ToString(), out iConvert) ? iConvert : 0;
+
+                            if (sdReader["QTDE"] != null) itensPedidoVenda.Qtde = int.TryParse(sdReader["QTDE"].ToString(), out iConvert) ? iConvert : 0;
+
+                            if (sdReader["PRECO"] != null) itensPedidoVenda.Preco = decimal.TryParse(sdReader["PRECO"].ToString(), out decConvert) ? decConvert : 0;
+
+
+                            if (sdReader["ID_PEDIDOVENDA"] != null)
+                            {
+                                itensPedidoVenda.IdPedidovenda = int.TryParse(sdReader["ID_PEDIDOVENDA"].ToString(), out iConvert) ? iConvert : 0;
+                            }
+
+                            if (sdReader["ID_PEDIDOVENDA"] != null)
+                            {
+                                itensPedidoVenda.PedidoVenda.Id = int.TryParse(sdReader["ID_PEDIDOVENDA"].ToString(), out iConvert) ? iConvert : 0;
+                            }
+
+                            if (sdReader["ID_PRODUTO"] != null)
+                            {
+                                itensPedidoVenda.IdProduto = int.TryParse(sdReader["ID_PRODUTO"].ToString(), out iConvert) ? iConvert : 0;
+                            }
+
+                            if (sdReader["ID_PRODUTO"] != null)
+                            {
+                                itensPedidoVenda.Produto.Id = int.TryParse(sdReader["ID_PRODUTO"].ToString(), out iConvert) ? iConvert : 0;
+                            }
+
+                            if (sdReader["ID_CLIENTE"] != null) itensPedidoVenda.PedidoVenda.IdCliente = int.TryParse(sdReader["ID_CLIENTE"].ToString(), out iConvert) ? iConvert : 0;
+                            if (sdReader["DATA_PEDIDOVENDA"] != null) itensPedidoVenda.PedidoVenda.DataPedidovenda = DateTime.TryParse(sdReader["DATA_PEDIDOVENDA"].ToString(), out dtConvert) ? dtConvert : DateTime.MinValue;
+                            if (sdReader["DATA_ENTREGAVENDA"] != null) itensPedidoVenda.PedidoVenda.DataEntregavenda = DateTime.TryParse(sdReader["DATA_ENTREGAVENDA"].ToString(), out dtConvert) ? dtConvert : DateTime.MinValue;
+                            if (sdReader["SITUACAO_PEDIDOVENDA"] != null) itensPedidoVenda.PedidoVenda.SituacaoPedidovenda = sdReader["SITUACAO_PEDIDOVENDA"].ToString();
+                            if (sdReader["CONDICAO_PAGAMENTO"] != null) itensPedidoVenda.PedidoVenda.CondicaoPagamento = sdReader["CONDICAO_PAGAMENTO"].ToString();
+                            if (sdReader["VALOR_FINAL"] != null) itensPedidoVenda.PedidoVenda.ValorFinal = decimal.TryParse(sdReader["VALOR_FINAL"].ToString(), out decConvert) ? decConvert : 0;
+                            if (sdReader["ID_FORNECEDOR"] != null) itensPedidoVenda.Produto.IdFornecedor = int.TryParse(sdReader["ID_FORNECEDOR"].ToString(), out iConvert) ? iConvert : 0;
+                            if (sdReader["NOME"] != null) itensPedidoVenda.Produto.Nome = sdReader["NOME"].ToString();
+                            if (sdReader["DESCRICAO"] != null) itensPedidoVenda.Produto.Descricao = sdReader["DESCRICAO"].ToString();
+                            if (sdReader["CATEGORIA"] != null) itensPedidoVenda.Produto.Categoria = sdReader["CATEGORIA"].ToString();
+                            if (sdReader["DATA_VALIDADE"] != null) itensPedidoVenda.Produto.DataValidade = DateTime.TryParse(sdReader["DATA_VALIDADE"].ToString(), out dtConvert) ? dtConvert : DateTime.MinValue;
+                            if (sdReader["QTDE_ESTOQUE"] != null) itensPedidoVenda.Produto.QtdeEstoque = int.TryParse(sdReader["QTDE_ESTOQUE"].ToString(), out iConvert) ? iConvert : 0;
+                            if (sdReader["QTDE_ESTOQUEATUAL"] != null) itensPedidoVenda.Produto.QtdeEstoqueatual = int.TryParse(sdReader["QTDE_ESTOQUEATUAL"].ToString(), out iConvert) ? iConvert : 0;
+                            if (sdReader["CAMINHO_FOTO"] != null) itensPedidoVenda.Produto.CaminhoFoto = sdReader["CAMINHO_FOTO"].ToString();
+                            if (sdReader["PRECO_UNITARIO"] != null) itensPedidoVenda.Produto.PrecoUnitario = decimal.TryParse(sdReader["PRECO_UNITARIO"].ToString(), out decConvert) ? decConvert : 0;
+                            if (sdReader["PRECO_VENDA"] != null) itensPedidoVenda.Produto.PrecoVenda = decimal.TryParse(sdReader["PRECO_VENDA"].ToString(), out decConvert) ? decConvert : 0;
+                            if (sdReader["INATIVO"] != null) itensPedidoVenda.Produto.Inativo = sdReader["INATIVO"].ToString();
+
+                            lstItensPedidoVenda.Add(itensPedidoVenda);
+                        }
+                    }
+
+                }
+                catch (SqlException ex)
+                {
+                    throw ex;
+                }
+                catch (Exception ex1)
+                {
+
+                    throw ex1;
+                }
+                finally
+                {
+                    if (conn.State == ConnectionState.Open)
+                    {
+                        conn.Close();
+                    }
+                }
+            }
+            return lstItensPedidoVenda;
+        }
+
+        public List<ItensPedidoVenda> RetornarListaItensPedidosVendaPorId(int Id)
+        {
+            List<ItensPedidoVenda> lstItensPedidoVenda = RetornarListaItensPedidoVenda();
+
+            List<ItensPedidoVenda> itensPedidoVenda = lstItensPedidoVenda.Where(c => c.Id == Id).ToList();
+            return itensPedidoVenda;
+        }
+
     }
 }

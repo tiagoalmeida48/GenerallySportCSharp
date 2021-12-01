@@ -91,20 +91,20 @@ namespace GenerallySports.Controllers
             return new string[] { "Voucher pedido de venda não inserido!" };
         }
 
-        [HttpPut("validar/{id}")]
-      //  [Authorize]
-        public ActionResult<IEnumerable<string>> Put([FromRoute] int id)
+        [HttpPut("validar/{codigo}")]
+        [Authorize]
+        public ActionResult<IEnumerable<string>> Put([FromRoute] string codigo)
         {
-            int retorno = 0; 
+            string retorno = "0"; 
 
             VoucherDAO voucherDAO = new VoucherDAO();
 
-            if (id > 0)
-                retorno = voucherDAO.VoucherValidado(id);
+            if (codigo != null)
+                retorno = voucherDAO.VoucherValidado(codigo);
             else
                 return new string[] { "Voucher não existe!" };
 
-            if (retorno == 1)
+            if (retorno == "1")
                 return new string[] { "Voucher validado com sucesso!" };
 
             return new string[] { "Voucher não atualizado!" };
