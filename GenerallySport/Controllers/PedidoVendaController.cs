@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace GenerallySport.Controllers
@@ -14,20 +15,23 @@ namespace GenerallySport.Controllers
     public class PedidoVendaController : ControllerBase
     {
         [HttpGet]
+        [Authorize]
         public List<PedidoVenda> Get()
         {
             PedidoVendaDAO pedidoVendaDAO = new PedidoVendaDAO();
-            return pedidoVendaDAO.RetornarListaPedidosVendidos();
+            long idCliente = long.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            return pedidoVendaDAO.RetornarListaPedidosVendidos(idCliente);
         }
 
         [HttpGet]
         [Route("{Id}")]
-        [AllowAnonymous]
+        [Authorize]
         public List<PedidoVenda> Get([FromRoute] int Id)
         {
             PedidoVendaDAO pedidoVendaDAO = new PedidoVendaDAO();
+            long idCliente = long.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            return pedidoVendaDAO.RetornarListaPedidosVendaPorId(Id);
+            return pedidoVendaDAO.RetornarListaPedidosVendaPorId(Id, idCliente);
 
         }
 
@@ -64,10 +68,11 @@ namespace GenerallySport.Controllers
             int retorno = 0;
             PedidoVendaDAO pedidoVendaDAO = new PedidoVendaDAO();
             // ItensPedidoVenda itensPedidoVenda = new ItensPedidoVenda();
+            long idCliente = long.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
             if (itensPedidoVenda.Id < 1)
             {
-                var ultimoPedido = pedidoVendaDAO.RetornarListaPedidosVendidos().LastOrDefault();
+                var ultimoPedido = pedidoVendaDAO.RetornarListaPedidosVendidos(idCliente).LastOrDefault();
                retorno = pedidoVendaDAO.CadastrarItensPedidoVenda(ultimoPedido.Id, itensPedidoVenda);
 
             }

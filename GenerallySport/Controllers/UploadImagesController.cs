@@ -29,8 +29,8 @@ namespace GenerallySport.Controllers
         {
             if (file.Files.Length > 0)
             {
-                var DIRETORIO = @"C:\Desenvolvimento\C#\Generally Sports"; 
-                var PASTA_UPLOAD = @"\uploadsFotos\";
+                var DIRETORIO = @"C:\Desenvolvimento\High System\High System Cast\assets\images"; 
+                var PASTA_UPLOAD = @"\FotosCliente\";
                 try
                 {
                     if (!Directory.Exists(DIRETORIO + PASTA_UPLOAD))

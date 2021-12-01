@@ -11,13 +11,13 @@ namespace GenerallySport.DAO
 {
     public class PedidoVendaDAO : DAO
     {
-        public List<PedidoVenda> RetornarListaPedidosVendidos()
+        public List<PedidoVenda> RetornarListaPedidosVendidos(long idCliente)
         {
             List<PedidoVenda> lstPredidosVendidos = new List<PedidoVenda>();
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 StringBuilder sbQuery = new StringBuilder();
-                sbQuery.AppendLine("SELECT P.*, C.* FROM PEDIDOVENDA P INNER JOIN CLIENTE C ON P.ID_CLIENTE = C.ID");
+                sbQuery.AppendLine("SELECT P.*, C.* FROM PEDIDOVENDA P INNER JOIN CLIENTE C ON P.ID_CLIENTE = C.ID WHERE P.ID_CLIENTE = " + idCliente);
 
                 SqlCommand objCmd = new SqlCommand(sbQuery.ToString(), conn);
                 objCmd.CommandType = CommandType.Text;
@@ -100,9 +100,9 @@ namespace GenerallySport.DAO
             return lstPredidosVendidos;
         }
 
-        public List<PedidoVenda> RetornarListaPedidosVendaPorId(int Id)
+        public List<PedidoVenda> RetornarListaPedidosVendaPorId(int Id, long idCliente)
         {
-            List<PedidoVenda> lstPredidosVendidos = RetornarListaPedidosVendidos();
+            List<PedidoVenda> lstPredidosVendidos = RetornarListaPedidosVendidos(idCliente);
 
             List<PedidoVenda> pedidoVenda = lstPredidosVendidos.Where(c => c.Id == Id).ToList();
             return pedidoVenda;
