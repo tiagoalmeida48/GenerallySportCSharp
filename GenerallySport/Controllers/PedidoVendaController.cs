@@ -83,6 +83,25 @@ namespace GenerallySport.Controllers
             return new string[] { "Itens do Pedido de venda não inserido!" };
         }
 
+        [HttpGet]
+        [Route("itenspedido")]
+        public List<ItensPedidoVenda> GetItens()
+        {
+            PedidoVendaDAO itensPedidoVendaDAO = new PedidoVendaDAO();
+            return itensPedidoVendaDAO.RetornarListaItensPedidoVenda();
+        }
+
+        [HttpGet]
+        [Route("itenspedido/{Id}")]
+        [AllowAnonymous]
+        public List<ItensPedidoVenda> GetItensPorId([FromRoute] int Id)
+        {
+            PedidoVendaDAO itensPedidoVendaDAO = new PedidoVendaDAO();
+
+            return itensPedidoVendaDAO.RetornarListaItensPedidosVendaPorId(Id);
+
+        }
+
         //// PUT api/<ClienteController>/5
         //[HttpPut("{id}")]
         //[Authorize]
@@ -102,23 +121,23 @@ namespace GenerallySport.Controllers
         //    return new string[] { "Cliente não atualizado!" };
         //}
 
-    //    [HttpPut()]
-    //    [Authorize]
-    //    public ActionResult<IEnumerable<string>> BaixaEstoque()
-    //    {
-    //        int retorno = 0;
-    //        PedidoVendaDAO pedidoVendaDAO = new PedidoVendaDAO();
+        //    [HttpPut()]
+        //    [Authorize]
+        //    public ActionResult<IEnumerable<string>> BaixaEstoque()
+        //    {
+        //        int retorno = 0;
+        //        PedidoVendaDAO pedidoVendaDAO = new PedidoVendaDAO();
 
-    //            retorno = pedidoVendaDAO.BaixaEstoque();
+        //            retorno = pedidoVendaDAO.BaixaEstoque();
 
-    //        if (retorno == 1)
-    //        {
+        //        if (retorno == 1)
+        //        {
 
-    //            return new string[] { "Itens do Pedido inserido com sucesso!" };
-    //        }
+        //            return new string[] { "Itens do Pedido inserido com sucesso!" };
+        //        }
 
-    //        return new string[] { "Itens do Pedido de venda não inserido!" };
-    //    }
-    //}
+        //        return new string[] { "Itens do Pedido de venda não inserido!" };
+        //    }
+        //}
     }
 }
