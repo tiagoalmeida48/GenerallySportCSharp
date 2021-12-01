@@ -273,7 +273,7 @@ namespace GenerallySport.DAO
             int retorno = 0;
 
             string query = "UPDATE PEDIDOVENDA_VOUCHER SET " +
-                "VALIDADO = @Validado WHERE VALIDADO = @Codigo";
+                "VALIDADO = @Validado WHERE VALIDADO = @Codigo AND CONDICAO_PAGAMENTO <> 'boleto'";
             SqlCommand cmd = new SqlCommand(query.ToString(), connection);
             cmd.CommandType = CommandType.Text;
 

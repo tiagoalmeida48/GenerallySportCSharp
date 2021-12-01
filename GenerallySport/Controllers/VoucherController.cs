@@ -92,7 +92,7 @@ namespace GenerallySports.Controllers
         }
 
         [HttpPut("validar/{codigo}")]
-        [Authorize]
+        [AllowAnonymous]
         public ActionResult<IEnumerable<string>> Put([FromRoute] string codigo)
         {
             string retorno = "0"; 
