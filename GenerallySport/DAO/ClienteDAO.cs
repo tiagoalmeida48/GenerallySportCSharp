@@ -299,8 +299,8 @@ namespace GenerallySport.DAO
             const string fromPassword = "generally@2021";
             // const string fromPassword = "fromPassword";
             const string subject = "Nova Senha";
-            string body =  $"Para gerar uma nova senha acesse o link: <a href='http://127.0.0.1:5501/nova-senha.html?id={clienteId}'> CLIQUE AQUI </a>, " +
-                 "Obrigada," +
+            string body =  $"Para criar uma nova senha acesse o link abaixo:<br><br> <a href='http://127.0.0.1:5501/nova-senha.html?id={clienteId}'> CLIQUE AQUI </a>, <br><br>" +
+                 "Obrigada,<br>" +
                  "Time Generally Sport";
             
 

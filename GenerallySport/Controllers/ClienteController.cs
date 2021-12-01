@@ -102,7 +102,7 @@ namespace GenerallySport.Controllers
             return new string[] { string.Empty };
         }
 
-        [HttpPost("enviarEmail")]
+        [HttpGet("enviarEmail/{email}")]
         [AllowAnonymous]
         public ActionResult<IEnumerable<string>> SendEmail(string email)
         {
