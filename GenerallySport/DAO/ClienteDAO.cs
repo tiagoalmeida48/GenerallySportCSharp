@@ -123,6 +123,13 @@ namespace GenerallySport.DAO
             return cliente;
         }
 
+        public Cliente RetornarClientePorEmail(string email)
+        {
+            List<Cliente> lstCliente = RetornarListaCliente();
+            Cliente cliente = lstCliente.Where(c => c.Email == email).FirstOrDefault();
+            return cliente;
+        }
+
         public int CadastrarCliente(Cliente cliente)
         {
             SqlConnection connection = new SqlConnection(this.connectionString);
@@ -284,15 +291,18 @@ namespace GenerallySport.DAO
             int retorno = 0;
             Cliente cliente = new Cliente();
             // cliente.Id = id;
-           // cliente = RetornarClientePorId(id);
-           // var emailCliente = cliente.Email;
+            cliente = RetornarClientePorEmail(email);
+            var clienteId = cliente.Id;
 
             var fromAddress = new MailAddress("generallysport@gmail.com", "Generally");
             var toAddress = new MailAddress(email, "Cliente");
             const string fromPassword = "generally@2021";
             // const string fromPassword = "fromPassword";
             const string subject = "Nova Senha";
-            const string body = "Escrever a mensagem aqui";
+            string body =  $"Para gerar uma nova senha acesse o link: <a href='http://127.0.0.1:5501/nova-senha.html?id={clienteId}'> CLIQUE AQUI </a>, " +
+                 "Obrigada," +
+                 "Time Generally Sport";
+            
 
             var smtp = new SmtpClient
             {
@@ -306,7 +316,8 @@ namespace GenerallySport.DAO
             using (var message = new MailMessage(fromAddress, toAddress)
             {
                 Subject = subject,
-                Body = body
+                Body = body,
+                IsBodyHtml = true
             })
             {
                 smtp.Send(message);
