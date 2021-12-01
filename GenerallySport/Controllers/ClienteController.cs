@@ -104,12 +104,12 @@ namespace GenerallySport.Controllers
 
         [HttpPost("enviarEmail")]
         [AllowAnonymous]
-        public ActionResult<IEnumerable<string>> SendEmail(int id)
+        public ActionResult<IEnumerable<string>> SendEmail(string email)
         {
             int retorno = 0;
             ClienteDAO clienteEmailDAO = new ClienteDAO();
 
-            retorno = clienteEmailDAO.EnviarEmail(id);          
+            retorno = clienteEmailDAO.EnviarEmail(email);          
 
             if (retorno == 1)
             {

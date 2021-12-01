@@ -279,16 +279,16 @@ namespace GenerallySport.DAO
             return retorno;
         }
 
-        public int EnviarEmail(int id)
+        public int EnviarEmail(string email)
         {
             int retorno = 0;
             Cliente cliente = new Cliente();
             // cliente.Id = id;
-            cliente = RetornarClientePorId(id);
-            var emailCliente = cliente.Email;
+           // cliente = RetornarClientePorId(id);
+           // var emailCliente = cliente.Email;
 
             var fromAddress = new MailAddress("generallysport@gmail.com", "Generally");
-            var toAddress = new MailAddress(emailCliente, "Cliente");
+            var toAddress = new MailAddress(email, "Cliente");
             const string fromPassword = "generally@2021";
             // const string fromPassword = "fromPassword";
             const string subject = "Nova Senha";
