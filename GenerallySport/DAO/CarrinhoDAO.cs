@@ -102,6 +102,71 @@ namespace GenerallySport.DAO
             return lstCarrinho;
         }
 
+        public Carrinho RetornarCarrinhoPorId(int idCarrinho)
+        {
+            Carrinho carrinhoUnico = new Carrinho();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                StringBuilder sbQuery = new StringBuilder();
+                sbQuery.AppendLine("SELECT * FROM CARRINHO WHERE ID = " + idCarrinho);
+
+                SqlCommand objCmd = new SqlCommand(sbQuery.ToString(), conn);
+                objCmd.CommandType = CommandType.Text;
+
+                try
+                {
+                    if (conn.State == ConnectionState.Closed)
+                    {
+                        conn.Open();
+
+                        SqlDataReader sdReader = objCmd.ExecuteReader();
+
+                        while (sdReader.Read())
+                        {
+                            Carrinho carrinho = new Carrinho();
+
+                            int iConvert = 0;
+                            decimal decConvert = 0;
+                            DateTime dtConvert = DateTime.MinValue;
+
+                            if (sdReader["ID"] != null)
+                                carrinho.Id = int.TryParse(sdReader["ID"].ToString(), out iConvert) ? iConvert : 0;
+
+                            if (sdReader["ID_CLIENTE"] != null)
+                                carrinho.IdCliente = int.TryParse(sdReader["ID_CLIENTE"].ToString(), out iConvert) ? iConvert : 0;
+
+                            if (sdReader["QTDE"] != null)
+                                carrinho.Qtde = int.TryParse(sdReader["QTDE"].ToString(), out iConvert) ? iConvert : 1;
+
+                            if (sdReader["PRECO"] != null)
+                                carrinho.Preco = decimal.TryParse(sdReader["PRECO"].ToString(), out decConvert) ? decConvert : 0;
+
+                            if (sdReader["ID_PRODUTO"] != null)
+                                carrinho.IdProduto = int.TryParse(sdReader["ID_PRODUTO"].ToString(), out iConvert) ? iConvert : 0;
+
+                            carrinhoUnico = carrinho;
+                        }
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    throw ex;
+                }
+                catch (Exception ex1)
+                {
+                    throw ex1;
+                }
+                finally
+                {
+                    if (conn.State == ConnectionState.Open)
+                    {
+                        conn.Close();
+                    }
+                }
+            }
+            return carrinhoUnico;
+        }
+
         public Carrinho RetornarCarrinhoProdutoPorId(int idProduto, int idCliente)
         {
             List<Carrinho> lstCarrinho = RetornarListaCarrinho(idCliente);
