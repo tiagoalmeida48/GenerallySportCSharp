@@ -66,6 +66,36 @@ namespace GenerallySports.Controllers
             return new string[] { "Voucher não inserido!" };
         }
 
+        [HttpGet("pedidovendavoucher")]
+        public List<PedidoVendaVoucher> GetPedidoVendaVoucher()
+        {
+            VoucherDAO voucherDAO = new VoucherDAO();
+            return voucherDAO.RetornarListaPedidoVoucher();
+        }
+
+        [HttpGet]
+        [Route("pedidovendavoucher/{Id}")]
+        [AllowAnonymous]
+        public PedidoVendaVoucher GetPedidoVendaVoucherPorId([FromRoute] int Id)
+        {
+            VoucherDAO voucherDAO = new VoucherDAO();     
+
+            return voucherDAO.RetornarListaPedidoVoucherPorId(Id);
+        }
+
+        [HttpGet]
+        [Route("pedidovendavoucher/cliente/{idCliente}")]
+        [AllowAnonymous]
+        public List<PedidoVendaVoucher> GetPedidoVendaVoucherPorIdCliente([FromRoute] int idCliente)
+        {
+            VoucherDAO voucherDAO = new VoucherDAO();
+            ClienteDAO clienteDAO = new ClienteDAO();
+
+          //  var infoCliente = clienteDAO.RetornarClientePorId(idCliente);
+            return voucherDAO.RetornarListaPedidoVoucherPorIdCliente(idCliente);
+            
+        }
+
         [HttpPost("pedidovenda")]
         [AllowAnonymous]
         public ActionResult<IEnumerable<string>> Post([FromBody] PedidoVendaVoucher pedidoVendaVoucher)

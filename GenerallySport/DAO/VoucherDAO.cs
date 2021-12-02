@@ -128,6 +128,8 @@ namespace GenerallySport.DAO
             return retorno;
         }
 
+        // A PARTIR DAQUI É DO PEDIDOVENDA_VOUCHER
+
 
         public int CadastrarVoucherPedidoVenda(PedidoVendaVoucher pedidoVendaVoucher)
         {
@@ -258,6 +260,22 @@ namespace GenerallySport.DAO
             List<PedidoVendaVoucher> lstPedidoVoucher = RetornarListaPedidoVoucher();
 
             PedidoVendaVoucher voucherPedido = lstPedidoVoucher.Where(c => c.Validado == validado).LastOrDefault();
+            return voucherPedido;
+        }
+
+        public PedidoVendaVoucher RetornarListaPedidoVoucherPorId(int id)
+        {
+            List<PedidoVendaVoucher> lstPedidoVoucher = RetornarListaPedidoVoucher();
+
+            PedidoVendaVoucher voucherPedido = lstPedidoVoucher.Where(c => c.Id == id).LastOrDefault();
+            return voucherPedido;
+        }
+
+        public List<PedidoVendaVoucher> RetornarListaPedidoVoucherPorIdCliente(int idCliente)
+        {
+            List<PedidoVendaVoucher> lstPedidoVoucher = RetornarListaPedidoVoucher();
+
+            List<PedidoVendaVoucher> voucherPedido = lstPedidoVoucher.Where(c => c.IdCliente == idCliente).ToList();
             return voucherPedido;
         }
 

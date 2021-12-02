@@ -7,7 +7,7 @@ namespace GenerallySport.DAO
 {
     public class DAO
     {
-        public string connectionString = @"server=tiago-nb; database=GENERALLY;integrated security=yes;";
+        public string connectionString = @"server=DESKTOP-US4LHLF\SQLEXPRESS; database=GENERALLY;integrated security=yes;";
 
         public string ConnString
         {
