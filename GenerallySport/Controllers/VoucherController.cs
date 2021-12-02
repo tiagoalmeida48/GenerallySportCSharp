@@ -95,18 +95,26 @@ namespace GenerallySports.Controllers
         [AllowAnonymous]
         public ActionResult<IEnumerable<string>> Put([FromRoute] string codigo)
         {
-            string retorno = "0"; 
-
+            string retorno = "0";
+          //  Cliente cliente = new Cliente();
+            ClienteDAO clienteDAO = new ClienteDAO();
+            
             VoucherDAO voucherDAO = new VoucherDAO();
+            var voucherPedidoCod = voucherDAO.RetornarListaPedidoVoucherPorCodigo(codigo);
 
             if (codigo != null)
+            {
                 retorno = voucherDAO.VoucherValidado(codigo);
+                
+
+            }
             else
                 return new string[] { "Voucher não existe!" };
 
-            if (retorno == "1")
-                return new string[] { "Voucher validado com sucesso!" };
-
+            if (retorno == "1") {
+                var infoCliente = clienteDAO.RetornarClientePorId(voucherPedidoCod.IdCliente);
+                return new string[] { $"Voucher validado com sucesso! Cliente: {infoCliente.Nome}, Email: {infoCliente.Email} e Celular: {infoCliente.Celular}"  };
+            }
             return new string[] { "Voucher não atualizado!" };
         }
     }
