@@ -122,7 +122,7 @@ namespace GenerallySport.Controllers
 
         [HttpPut("resetarSenha")]
         [AllowAnonymous]
-        public ActionResult<IEnumerable<string>> ResetarSenha(int id, string senha)
+        public ActionResult<IEnumerable<string>> ResetarSenha([FromForm] int id, [FromForm] string senha)
         {
             int retorno = 0;
             ClienteDAO clienteEmailDAO = new ClienteDAO();
