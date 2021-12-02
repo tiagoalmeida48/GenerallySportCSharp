@@ -113,7 +113,7 @@ namespace GenerallySports.Controllers
 
             if (retorno == "1") {
                 var infoCliente = clienteDAO.RetornarClientePorId(voucherPedidoCod.IdCliente);
-                return new string[] { $"Voucher validado com sucesso! Cliente: {infoCliente.Nome}, CPF: {infoCliente.Cpf} Email: {infoCliente.Email} e Celular: {infoCliente.Celular}"  };
+                return new string[] { $"Voucher validado com sucesso! <br>Cliente: {infoCliente.Nome}, <br>CPF: {infoCliente.Cpf},<br> Email: {infoCliente.Email},<br> Celular: {infoCliente.Celular}"  };
             }
             return new string[] { "Voucher não atualizado!" };
         }
