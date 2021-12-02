@@ -93,7 +93,8 @@ namespace GenerallySport.Controllers
         public List<ItensPedidoVenda> GetItens()
         {
             PedidoVendaDAO itensPedidoVendaDAO = new PedidoVendaDAO();
-            return itensPedidoVendaDAO.RetornarListaItensPedidoVenda();
+            var idCliente = long.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            return itensPedidoVendaDAO.RetornarListaItensPedidoVenda(idCliente);
         }
 
         [HttpGet]
@@ -102,8 +103,9 @@ namespace GenerallySport.Controllers
         public List<ItensPedidoVenda> GetItensPorId([FromRoute] int Id)
         {
             PedidoVendaDAO itensPedidoVendaDAO = new PedidoVendaDAO();
+            var idCliente = long.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            return itensPedidoVendaDAO.RetornarListaItensPedidosVendaPorId(Id);
+            return itensPedidoVendaDAO.RetornarListaItensPedidosVendaPorId(Id, idCliente);
 
         }
 
