@@ -134,9 +134,9 @@ namespace GenerallySport.DAO
             Random randNum = new Random();
             var numeroValido = randNum.Next(10000, 100000).ToString();
             var existeNumero = RetornarListaPedidoVoucherPorCodigo(numeroValido);
-          //  var existeNumero1 = existeNumero.Select(c => c.Validado == numeroValido).ToList();
+            //  var existeNumero1 = existeNumero.Select(c => c.Validado == numeroValido).ToList();
 
-            while (existeNumero.Equals(1)) 
+            while (existeNumero != null) 
 
             {
 
@@ -253,11 +253,11 @@ namespace GenerallySport.DAO
             return lstPedidoVoucher;
         }
 
-        public List<PedidoVendaVoucher> RetornarListaPedidoVoucherPorCodigo(string validado)
+        public PedidoVendaVoucher RetornarListaPedidoVoucherPorCodigo(string validado)
         {
             List<PedidoVendaVoucher> lstPedidoVoucher = RetornarListaPedidoVoucher();
 
-            List<PedidoVendaVoucher> voucherPedido = lstPedidoVoucher.Where(c => c.Validado == validado).ToList();
+            PedidoVendaVoucher voucherPedido = lstPedidoVoucher.Where(c => c.Validado == validado).LastOrDefault();
             return voucherPedido;
         }
 
