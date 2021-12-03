@@ -21,6 +21,7 @@ namespace GenerallySport
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    
                 });
     }
 }

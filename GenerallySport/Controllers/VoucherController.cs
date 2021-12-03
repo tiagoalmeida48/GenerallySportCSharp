@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace GenerallySports.Controllers
@@ -70,7 +71,9 @@ namespace GenerallySports.Controllers
         public List<PedidoVendaVoucher> GetPedidoVendaVoucher()
         {
             VoucherDAO voucherDAO = new VoucherDAO();
-            return voucherDAO.RetornarListaPedidoVoucher();
+            int idCliente = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            return voucherDAO.RetornarListaPedidoVoucher(idCliente);
         }
 
         [HttpGet]
@@ -78,9 +81,10 @@ namespace GenerallySports.Controllers
         [AllowAnonymous]
         public PedidoVendaVoucher GetPedidoVendaVoucherPorId([FromRoute] int Id)
         {
-            VoucherDAO voucherDAO = new VoucherDAO();     
+            VoucherDAO voucherDAO = new VoucherDAO();
+            int idCliente = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            return voucherDAO.RetornarListaPedidoVoucherPorId(Id);
+            return voucherDAO.RetornarListaPedidoVoucherPorId(Id, idCliente);
         }
 
         [HttpGet]
@@ -102,11 +106,12 @@ namespace GenerallySports.Controllers
         {
             int retorno = 0;
             VoucherDAO voucherDAO = new VoucherDAO();
+            int idCliente = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
             if (pedidoVendaVoucher.Id < 1)
             {
             //    var ultimoVoucher = voucherDAO.RetornarListaVoucher().LastOrDefault();
-                retorno = voucherDAO.CadastrarVoucherPedidoVenda(pedidoVendaVoucher);
+                retorno = voucherDAO.CadastrarVoucherPedidoVenda(pedidoVendaVoucher, idCliente);
 
             }
             else
@@ -130,6 +135,7 @@ namespace GenerallySports.Controllers
             ClienteDAO clienteDAO = new ClienteDAO();
             
             VoucherDAO voucherDAO = new VoucherDAO();
+
             var voucherPedidoCod = voucherDAO.RetornarListaPedidoVoucherPorCodigo(codigo);
 
             if (codigo != null)

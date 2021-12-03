@@ -237,7 +237,7 @@ namespace GenerallySport.DAO
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 StringBuilder sbQuery = new StringBuilder();
-                sbQuery.AppendLine("SELECT I.*, V.*, P.* FROM ITENS_PEDIDOVENDA I INNER JOIN PEDIDOVENDA V ON I.ID_PEDIDOVENDA = V.ID INNER JOIN PRODUTO P ON I.ID_PRODUTO = P.ID WHERE ID_CLIENTE = " + idCliente);
+                sbQuery.AppendLine("SELECT I.*, V.*, P.* FROM ITENS_PEDIDOVENDA I INNER JOIN PEDIDOVENDA V ON I.ID_PEDIDOVENDA = V.ID INNER JOIN PRODUTO P ON I.ID_PRODUTO = P.ID WHERE V.ID_CLIENTE = " + idCliente);
 
                 SqlCommand objCmd = new SqlCommand(sbQuery.ToString(), conn);
                 objCmd.CommandType = CommandType.Text;
@@ -335,7 +335,7 @@ namespace GenerallySport.DAO
         {
             List<ItensPedidoVenda> lstItensPedidoVenda = RetornarListaItensPedidoVenda(idCliente);
 
-            List<ItensPedidoVenda> itensPedidoVenda = lstItensPedidoVenda.Where(c => c.Id == Id).ToList();
+            List<ItensPedidoVenda> itensPedidoVenda = lstItensPedidoVenda.Where(c => c.IdProduto == Id).ToList();
             return itensPedidoVenda;
         }
 
